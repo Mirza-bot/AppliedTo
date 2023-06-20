@@ -1,6 +1,5 @@
 # Include .gitignore rules from nested directories
 
-include ./frontend/.gitignore
 
 # Logs
 logs
