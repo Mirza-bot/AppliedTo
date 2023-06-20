@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { User } from "../../../shared/types";
+import { User, UserDocuments } from "../../../shared/types";
 
 export const useUserStore = create<User>((set) => ({
   id: "test",
@@ -11,4 +11,8 @@ export const useUserStore = create<User>((set) => ({
     darkMode: false,
     searchPreferences: false,
   },
+  setName: (name: string) => set({ name: name }),
+  setEmail: (email: string) => set({ email: email }),
+  setDocuments: (documentsObj: UserDocuments) =>
+    set({ documents: documentsObj }),
 }));

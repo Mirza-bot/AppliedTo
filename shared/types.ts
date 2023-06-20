@@ -3,7 +3,7 @@ interface User {
   id: string;
   name: string;
   email: string;
-  documents: userDocuments | null;
+  documents: UserDocuments | null;
   applications: [Application] | null;
   settings: Settings;
 }
@@ -28,7 +28,7 @@ interface Settings {
   searchPreferences: any;
 }
 
-interface userDocuments {
+interface UserDocuments {
   coverLetter?: {
     id: string;
     file: File;
@@ -39,4 +39,4 @@ interface userDocuments {
   };
 }
 
-export type { User };
+export type { User, UserDocuments };
