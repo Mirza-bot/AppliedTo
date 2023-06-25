@@ -13,7 +13,7 @@ interface UserData extends User {
 }
 
 interface JobListing {
-  creatorId: string;
+  userId: string;
   jobTitle: string;
   companyName: string;
   jobDescription: string;

@@ -15,7 +15,7 @@ const setApplication = expressAsyncHandler(
       jobTitle: request.jobTitle,
       companyName: request.companyName,
       jobDescription: request.jobDescription,
-      creatorId: request.creatorId,
+      userId: request.userId,
       appliedOver: request.appliedOver,
       cvId: request.cvId,
       clId: request.clId,
@@ -29,6 +29,7 @@ const setApplication = expressAsyncHandler(
         jobTitle: application.jobTitle,
         companyName: application.companyName,
         jobDescription: application.jobDescription,
+        notes: application.notes,
         isFavorite: application.isFavorite,
       });
     } else {
@@ -45,24 +46,21 @@ const getApplication = expressAsyncHandler(
   async (req: Request, res: Response) => {
     const request = req.body as Application;
 
-    try {
-      const permission = await userModel.findById(req.body.userId);
+    const user = (await userModel.findById(req.body.userId)) as UserData;
+    const application = (await applicationModel.findById(
+      request._id
+    )) as Application;
 
-      if (permission) {
-        const application = (await applicationModel.findOne({
-          _id: request._id,
-        })) as Application;
-
-        res.status(200).json({
-          _id: application._id,
-          jobTitle: application.jobTitle,
-          companyName: application.companyName,
-          jobDescription: application.jobDescription,
-          notes: application.notes,
-          isFavorite: application.isFavorite,
-        });
-      }
-    } catch (error) {
+    if (user._id.toString() === application.userId) {
+      res.status(200).json({
+        _id: application._id,
+        jobTitle: application.jobTitle,
+        companyName: application.companyName,
+        jobDescription: application.jobDescription,
+        notes: application.notes,
+        isFavorite: application.isFavorite,
+      });
+    } else {
       throw new Error("User has no permission to read this application.");
     }
   }
@@ -81,7 +79,7 @@ const editApplication = expressAsyncHandler(
       request._id
     )) as Application;
 
-    if (user._id.toString() === application.creatorId) {
+    if (user._id.toString() === application.userId) {
       await applicationModel.updateOne(
         {
           _id: request._id,
@@ -113,7 +111,7 @@ const deleteApplication = expressAsyncHandler(
       request._id
     )) as Application;
 
-    if (user._id.toString() === application.creatorId) {
+    if (user._id.toString() === application.userId) {
       await applicationModel.deleteOne(application._id as String);
       res.status(200).send("Successfully deleted!");
     } else {

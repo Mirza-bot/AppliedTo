@@ -15,7 +15,7 @@ const applicationSchema = new Schema<Application>(
     appliedOver: { type: String, required: false },
     cvId: { type: String, required: false },
     clId: { type: String, required: false },
-    creatorId: { type: String, required: true },
+    userId: { type: String, required: true },
     notes: { type: Array, required: false },
     isFavorite: { type: Boolean, required: false },
   },
