@@ -1,10 +1,11 @@
 import { create } from "zustand";
-import { User, UserDocuments } from "../../../shared/types";
+import { UserData, UserDocuments } from "../../../shared/types";
 
-export const useUserStore = create<User>((set) => ({
+export const useUserStore = create<UserData>((set) => ({
   id: "test",
   name: "test",
   email: "sdasada",
+  password: "test13",
   documents: null,
   applications: null,
   settings: {

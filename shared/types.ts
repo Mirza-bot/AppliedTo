@@ -1,14 +1,18 @@
 //every any is a placeholder
 interface User {
-  id: string;
-  name: string;
   email: string;
-  documents: UserDocuments | null;
+  name: string;
+  password: string;
+}
+
+interface UserData extends User {
+  id: string;
+  documents: [UserDocuments] | null;
   applications: [Application] | null;
   settings: Settings;
 }
 
-interface Job {
+interface JobListing {
   jobTitle: string;
   companyName: string;
   jobDescription: string;
@@ -16,7 +20,7 @@ interface Job {
   date: Date;
 }
 
-interface Application extends Job {
+interface Application extends JobListing {
   appliedOver: string;
   applicationId: string;
   cvId: string;
@@ -28,15 +32,15 @@ interface Settings {
   searchPreferences: any;
 }
 
+/**
+ * for cover letters and cv's
+ */
 interface UserDocuments {
-  coverLetter?: {
+  document?: {
     id: string;
+    name: string;
     file: File;
-  };
-  cv?: {
-    id: string;
-    file: string;
   };
 }
 
-export type { User, UserDocuments };
+export type { User, UserData, UserDocuments };
