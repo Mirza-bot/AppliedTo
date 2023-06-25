@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { User } from "../../shared/types";
 import expressAsyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
-import jwt, { Jwt } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import userModel from "../models/userModel";
 import { Types } from "mongoose";
 
@@ -45,7 +45,7 @@ const registerUser = expressAsyncHandler(
       });
     } else {
       res.status(400);
-      throw new Error("Invalid user data");
+      throw new Error("Invalid user data.");
     }
   }
 );
@@ -55,7 +55,7 @@ const registerUser = expressAsyncHandler(
  * @route /api/users/login
  * @access public
  */
-const loginUser = expressAsyncHandler(async (req: any, res: any) => {
+const loginUser = expressAsyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body as User;
 
   const user = await userModel.findOne({ email });
@@ -81,4 +81,13 @@ const generateToken = (id: Types.ObjectId) => {
   });
 };
 
-export { registerUser, loginUser };
+const getUserData = expressAsyncHandler((req: Request, res: Response) => {
+  const user = {
+    id: req.body.user._id,
+    email: req.body.user.email,
+    name: req.body.user.name,
+  };
+  res.status(200).json(user);
+});
+
+export { registerUser, loginUser, getUserData };

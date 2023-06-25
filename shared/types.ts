@@ -6,26 +6,30 @@ interface User {
 }
 
 interface UserData extends User {
-  id: string;
+  _id: string;
   documents: [UserDocuments] | null;
   applications: [Application] | null;
   settings: Settings;
 }
 
 interface JobListing {
+  creatorId: string;
   jobTitle: string;
   companyName: string;
   jobDescription: string;
-  listingId: string;
   date: Date;
+  _id: string;
 }
 
 interface Application extends JobListing {
-  appliedOver: string;
-  applicationId: string;
-  cvId: string;
-  clId: string;
+  appliedOver?: string;
+  cvId?: string;
+  clId?: string;
+  notes?: Notes;
+  isFavorite?: boolean;
 }
+
+type Notes = [note: string];
 
 interface Settings {
   darkMode: boolean;
@@ -43,4 +47,4 @@ interface UserDocuments {
   };
 }
 
-export type { User, UserData, UserDocuments };
+export type { User, UserData, UserDocuments, Application, Notes };

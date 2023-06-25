@@ -1,8 +1,9 @@
 import express, { Request, Response, urlencoded } from "express";
 import "dotenv/config";
-import router from "./routes/userRoutes";
+import userRouter from "./routes/userRoutes";
 import errorHandler from "./middleware/errorMiddleware";
 import connectDB from "./config/db";
+import applicationRouter from "./routes/applicationRoute";
 
 const port = process.env.PORT || 5000;
 
@@ -19,7 +20,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Routes
-app.use("/api/users", router);
+app.use("/api/users", userRouter);
+app.use("/api/applications", applicationRouter);
 
 // Middleware
 app.use(errorHandler);
