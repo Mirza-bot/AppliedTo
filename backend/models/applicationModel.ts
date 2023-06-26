@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 import { Application } from "../../shared/types";
 
 const applicationSchema = new Schema<Application>(
@@ -15,7 +15,7 @@ const applicationSchema = new Schema<Application>(
     appliedOver: { type: String, required: false },
     cvId: { type: String, required: false },
     clId: { type: String, required: false },
-    userId: { type: String, required: true },
+    userId: { type: Schema.Types.ObjectId, required: true },
     notes: { type: Array, required: false },
     isFavorite: { type: Boolean, required: false },
   },

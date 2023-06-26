@@ -4,6 +4,7 @@ import userRouter from "./routes/userRoutes";
 import errorHandler from "./middleware/errorMiddleware";
 import connectDB from "./config/db";
 import applicationRouter from "./routes/applicationRoute";
+import documentRouter from "./routes/documentRoute";
 
 const port = process.env.PORT || 5000;
 
@@ -22,6 +23,7 @@ app.get("/", (req: Request, res: Response) => {
 // Routes
 app.use("/api/users", userRouter);
 app.use("/api/applications", applicationRouter);
+app.use("/api/documents", documentRouter);
 
 // Middleware
 app.use(errorHandler);

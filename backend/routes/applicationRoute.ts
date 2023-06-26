@@ -5,15 +5,16 @@ import {
   editApplication,
   deleteApplication,
 } from "../controllers/applicationController";
+import { protect } from "../middleware/authMiddleware";
 
 const applicationRouter = express.Router();
 
-applicationRouter.post("/create", setApplication);
+applicationRouter.post("/create", protect, setApplication);
 
-applicationRouter.get("/read", getApplication);
+applicationRouter.get("/read", protect, getApplication);
 
-applicationRouter.patch("/edit", editApplication);
+applicationRouter.patch("/edit", protect, editApplication);
 
-applicationRouter.delete("/delete", deleteApplication);
+applicationRouter.delete("/delete", protect, deleteApplication);
 
 export default applicationRouter;

@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
-import { User } from "../../shared/types";
+import { User, UserData } from "../../shared/types";
 import expressAsyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import userModel from "../models/userModel";
-import { Types } from "mongoose";
 
 /**
  * Registers a user
@@ -35,6 +34,10 @@ const registerUser = expressAsyncHandler(
       name,
       email,
       password: hashedPassword,
+      documents: "null",
+      applications: "null",
+      settings: "null",
+      avatar: "null",
     });
     if (user) {
       res.status(201).json({
@@ -67,6 +70,9 @@ const loginUser = expressAsyncHandler(async (req: Request, res: Response) => {
       name: user.name,
       email: user.email,
       token: generateToken(user._id),
+      documents: user.documents,
+      settings: user.settings,
+      avatar: user.avatar,
     });
   } else {
     res.status(401);
@@ -75,19 +81,46 @@ const loginUser = expressAsyncHandler(async (req: Request, res: Response) => {
 });
 
 // Function to create JWT
-const generateToken = (id: Types.ObjectId) => {
+const generateToken = (id: String) => {
   return jwt.sign({ id }, process.env.JWT_SECRET as jwt.Secret, {
     expiresIn: "30d",
   });
 };
 
-const getUserData = expressAsyncHandler((req: Request, res: Response) => {
+const getUserData = (req: Request, res: Response) => {
+  const request = req.body.user as UserData;
   const user = {
-    id: req.body.user._id,
-    email: req.body.user.email,
-    name: req.body.user.name,
+    id: request._id,
+    email: request.email,
+    name: request.name,
+    documents: request.documents,
+    settings: request.settings,
+    avatar: request.avatar,
   };
   res.status(200).json(user);
-});
+};
 
-export { registerUser, loginUser, getUserData };
+const editUserData = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    const request = req.body as UserData;
+    await userModel.findByIdAndUpdate(request._id.toString(), {
+      name: request.name,
+      applications: request.applications,
+      settings: request.settings,
+      documents: request.documents,
+    });
+    res.status(200).json(request);
+  }
+);
+
+const setUserAvatar = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    const request = req.body as UserData;
+    await userModel.findByIdAndUpdate(request._id.toString(), {
+      avatar: request.avatar,
+    });
+    res.status(200).json(req.file);
+  }
+);
+
+export { registerUser, loginUser, getUserData, editUserData, setUserAvatar };

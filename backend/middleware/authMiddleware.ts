@@ -34,6 +34,8 @@ const protect = expressAsyncHandler(
         res.status(401);
         throw new Error("Not authorized!");
       }
+    } else {
+      throw new Error("No Token received. Please authorize again.");
     }
   }
 );

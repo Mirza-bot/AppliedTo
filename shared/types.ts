@@ -1,3 +1,6 @@
+import { File } from "buffer";
+import { Types } from "mongoose";
+
 //every any is a placeholder
 interface User {
   email: string;
@@ -7,13 +10,14 @@ interface User {
 
 interface UserData extends User {
   _id: string;
-  documents: [UserDocuments] | null;
-  applications: [Application] | null;
-  settings: Settings;
+  documents?: [Types.ObjectId];
+  applications?: [Types.ObjectId];
+  settings?: Settings;
+  avatar?: File;
 }
 
 interface JobListing {
-  userId: string;
+  userId: Types.ObjectId;
   jobTitle: string;
   companyName: string;
   jobDescription: string;
@@ -33,18 +37,16 @@ type Notes = [note: string];
 
 interface Settings {
   darkMode: boolean;
-  searchPreferences: any;
+  searchPreferences: Object;
 }
 
 /**
  * for cover letters and cv's
  */
 interface UserDocuments {
-  document?: {
-    id: string;
-    name: string;
-    file: File;
-  };
+  userId: string;
+  name: string;
+  file: File;
 }
 
 export type { User, UserData, UserDocuments, Application, Notes };

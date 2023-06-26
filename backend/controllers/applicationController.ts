@@ -51,7 +51,7 @@ const getApplication = expressAsyncHandler(
       request._id
     )) as Application;
 
-    if (user._id.toString() === application.userId) {
+    if (user._id.toString() === application.userId.toString()) {
       res.status(200).json({
         _id: application._id,
         jobTitle: application.jobTitle,
@@ -79,7 +79,7 @@ const editApplication = expressAsyncHandler(
       request._id
     )) as Application;
 
-    if (user._id.toString() === application.userId) {
+    if (user._id.toString() === application.userId.toString()) {
       await applicationModel.updateOne(
         {
           _id: request._id,
@@ -111,7 +111,7 @@ const deleteApplication = expressAsyncHandler(
       request._id
     )) as Application;
 
-    if (user._id.toString() === application.userId) {
+    if (user._id.toString() === application.userId.toString()) {
       await applicationModel.deleteOne(application._id as String);
       res.status(200).send("Successfully deleted!");
     } else {
