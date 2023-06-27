@@ -1,12 +1,14 @@
-import Login from "./pages/Login";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import AnimatedRoutes from "./AnimatedRoutes";
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/login" Component={Login}></Route>
-      </Routes>
+      <Navbar />
+      <div className="-translate-y-10">
+        <AnimatedRoutes />
+      </div>
     </Router>
   );
 }
