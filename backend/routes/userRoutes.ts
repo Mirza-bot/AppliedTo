@@ -15,10 +15,10 @@ userRouter.post("/register", registerUser);
 
 userRouter.post("/login", loginUser);
 
-userRouter.get("/user", protect, getUserData);
+userRouter.get("/", protect, getUserData);
 
-userRouter.put("/user/update", protect, editUserData);
+userRouter.put("/update", protect, editUserData);
 
-userRouter.put("/user/avatar", protect, fileUpload, setUserAvatar);
+userRouter.put("/avatar", protect, fileUpload, setUserAvatar);
 
 export default userRouter;

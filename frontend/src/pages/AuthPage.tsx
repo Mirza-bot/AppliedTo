@@ -33,7 +33,7 @@ function AuthPage() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0, transition: { duration: 0.5 } }}
+        exit={{ opacity: 0, transition: { duration: 0.2 } }}
         className="text-sm text-center font-light text-blue w-full mb-3"
       >
         <button

@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { login } from "../../features/fetching";
+import { User } from "../../../shared/types";
+import { useAuthStore } from "../../features/store/auth";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  //State
+  const authStore = useAuthStore();
 
   const handleInput = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -13,11 +18,18 @@ function LoginForm() {
     action(event.target.value);
   };
 
+  const submitForm = async () => {
+    const loginData = (await login(email, password)) as User;
+    authStore.email = loginData.email;
+    authStore.name = loginData.name;
+    authStore.token = loginData.token;
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.4 } }}
+      exit={{ opacity: 0, transition: { duration: 0.2 } }}
     >
       <div>
         <header className="text-3xl font-semibold mb-6">Login</header>
@@ -49,6 +61,7 @@ function LoginForm() {
             onChange={(e) => handleInput(e, setPassword)}
           />
           <button
+            onClick={submitForm}
             type="submit"
             className="bg-primary text-white text-xl font-medium w-9/12 h-12 rounded-md mx-auto mt-2 block  active:bg-accent active:text-secondary transition-colors  select-none"
           >

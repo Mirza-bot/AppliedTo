@@ -12,8 +12,9 @@ import userModel from "../models/userModel";
  */
 const registerUser = expressAsyncHandler(
   async (req: Request, res: Response) => {
-    const { name, email, password } = req.body as User;
-    if (!name || !email || !password) {
+    console.log(!req.body.password);
+    const { name, email, password } = <User>req.body;
+    if (!email || !name || !password) {
       res.status(400);
       throw new Error("Please provide a valid username, email and password!");
     }
@@ -59,9 +60,19 @@ const registerUser = expressAsyncHandler(
  * @access public
  */
 const loginUser = expressAsyncHandler(async (req: Request, res: Response) => {
-  const { email, password } = req.body as User;
+  const { email, password } = <User>req.body;
 
   const user = await userModel.findOne({ email });
+
+  if (!email || !password) {
+    res.status(400);
+    throw new Error("Both email and password are required.");
+  }
+
+  if (!user || !user.password) {
+    res.status(401);
+    throw new Error("Invalid email or password.");
+  }
 
   // Check matching user and passwords
   if (user && (await bcrypt.compare(password, user.password))) {
@@ -82,13 +93,13 @@ const loginUser = expressAsyncHandler(async (req: Request, res: Response) => {
 
 // Function to create JWT
 const generateToken = (id: String) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET as jwt.Secret, {
+  return jwt.sign({ id }, <jwt.Secret>process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
 };
 
 const getUserData = (req: Request, res: Response) => {
-  const request = req.body.user as UserData;
+  const request = <UserData>req.body.user;
   const user = {
     id: request._id,
     email: request.email,
@@ -102,7 +113,7 @@ const getUserData = (req: Request, res: Response) => {
 
 const editUserData = expressAsyncHandler(
   async (req: Request, res: Response) => {
-    const request = req.body as UserData;
+    const request = <UserData>req.body;
     await userModel.findByIdAndUpdate(request._id.toString(), {
       name: request.name,
       applications: request.applications,
@@ -115,7 +126,7 @@ const editUserData = expressAsyncHandler(
 
 const setUserAvatar = expressAsyncHandler(
   async (req: Request, res: Response) => {
-    const request = req.body as UserData;
+    const request = <UserData>req.body;
     await userModel.findByIdAndUpdate(request._id.toString(), {
       avatar: request.avatar,
     });

@@ -23,7 +23,7 @@ const protect = expressAsyncHandler(
         // Verification
         const decoded = jwt.verify(
           token,
-          process.env.JWT_SECRET as jwt.Secret
+          <jwt.Secret>process.env.JWT_SECRET
         ) as Token;
         req.body.user = await userModel
           .findById(decoded.id)

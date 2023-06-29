@@ -1,4 +1,5 @@
-import express, { Request, Response, urlencoded } from "express";
+import express, { Request, Response } from "express";
+import cors from "cors";
 import "dotenv/config";
 import userRouter from "./routes/userRoutes";
 import errorHandler from "./middleware/errorMiddleware";
@@ -15,13 +16,14 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, Express with TypeScript!");
 });
 
 // Routes
-app.use("/api/users", userRouter);
+app.use("/api/user", userRouter);
 app.use("/api/applications", applicationRouter);
 app.use("/api/documents", documentRouter);
 

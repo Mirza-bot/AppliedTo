@@ -45,7 +45,7 @@ const deleteDocument = expressAsyncHandler(
 
 const getDocuments = expressAsyncHandler(
   async (req: Request, res: Response) => {
-    const userRequest = req.body.user as UserData;
+    const userRequest = <UserData>req.body.user;
     const documents = await documentModel.find({ userId: userRequest._id });
     if (documents) {
       res.status(200).send(documents);

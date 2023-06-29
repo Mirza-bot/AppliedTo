@@ -5,15 +5,16 @@ import { Types } from "mongoose";
 interface User {
   email: string;
   name: string;
-  password: string;
+  password?: string;
+  token?: string;
+  documents?: [Types.ObjectId] | [File];
+  applications?: [Types.ObjectId] | [File];
+  settings?: Settings;
+  avatar?: File;
 }
 
 interface UserData extends User {
   _id: string;
-  documents?: [Types.ObjectId];
-  applications?: [Types.ObjectId];
-  settings?: Settings;
-  avatar?: File;
 }
 
 interface JobListing {

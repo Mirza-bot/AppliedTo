@@ -9,7 +9,7 @@ import { Application, UserData } from "../../shared/types";
  */
 const setApplication = expressAsyncHandler(
   async (req: Request, res: Response) => {
-    const request = req.body as Application;
+    const request = <Application>req.body;
 
     const application = await applicationModel.create({
       jobTitle: request.jobTitle,
@@ -44,12 +44,22 @@ const setApplication = expressAsyncHandler(
  */
 const getApplication = expressAsyncHandler(
   async (req: Request, res: Response) => {
-    const request = req.body as Application;
+    const request = <Application>req.body;
 
-    const user = (await userModel.findById(req.body.userId)) as UserData;
-    const application = (await applicationModel.findById(
-      request._id
-    )) as Application;
+    const user = <UserData>await userModel.findById(req.body.userId);
+    const application = <Application>(
+      await applicationModel.findById(request._id)
+    );
+
+    if (!user) {
+      res.status(400);
+      throw new Error("No matching user found due to invalid data.");
+    }
+
+    if (!application) {
+      res.status(400);
+      throw new Error("Application couldn't be found due to invalid request.");
+    }
 
     if (user._id.toString() === application.userId.toString()) {
       res.status(200).json({
@@ -72,12 +82,20 @@ const getApplication = expressAsyncHandler(
  */
 const editApplication = expressAsyncHandler(
   async (req: Request, res: Response) => {
-    const request = req.body as Application;
+    const request = <Application>req.body;
 
-    const user = (await userModel.findById(req.body.userId)) as UserData;
-    const application = (await applicationModel.findById(
-      request._id
-    )) as Application;
+    const user = await userModel.findById(req.body.userId);
+    const application = await applicationModel.findById(request._id);
+
+    if (!application) {
+      res.status(400);
+      throw new Error("Application couldn't be found due to invalid request.");
+    }
+
+    if (!user) {
+      res.status(400);
+      throw new Error("No matching user found due to invalid data.");
+    }
 
     if (user._id.toString() === application.userId.toString()) {
       await applicationModel.updateOne(
@@ -104,15 +122,25 @@ const editApplication = expressAsyncHandler(
 
 const deleteApplication = expressAsyncHandler(
   async (req: Request, res: Response) => {
-    const request = req.body as Application;
+    const request = <Application>req.body;
 
-    const user = (await userModel.findById(req.body.userId)) as UserData;
-    const application = (await applicationModel.findById(
-      request._id
-    )) as Application;
+    const user = await userModel.findById(req.body.userId);
+    const application = await applicationModel.findById(request._id);
 
-    if (user._id.toString() === application.userId.toString()) {
-      await applicationModel.deleteOne(application._id as String);
+    if (!application) {
+      res.status(400);
+      throw new Error("Application couldn't be found due to invalid request.");
+    }
+
+    if (!user) {
+      res.status(400);
+      throw new Error("No matching user found due to invalid data.");
+    }
+
+    const isAuthorizedToDelete = user._id === application.userId.toString();
+
+    if (isAuthorizedToDelete) {
+      await applicationModel.deleteOne({ _id: application._id });
       res.status(200).send("Successfully deleted!");
     } else {
       throw new Error("User has no permission to delete this application.");

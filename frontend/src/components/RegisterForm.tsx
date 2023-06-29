@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { register } from "../../features/fetching";
 
 function RegisterForm() {
   const [email, setEmail] = useState("");
@@ -11,6 +12,12 @@ function RegisterForm() {
     action: React.Dispatch<React.SetStateAction<string>>
   ) => {
     action(event.target.value);
+  };
+
+  const submitForm = () => {
+    if (email && username && password) {
+      register(email, username, password);
+    }
   };
   return (
     <motion.div
@@ -74,6 +81,7 @@ function RegisterForm() {
             onChange={(e) => handleInput(e, setPassword)}
           />
           <button
+            onClick={submitForm}
             type="submit"
             className="bg-secondary text-accent text-xl font-medium w-9/12 h-12 rounded-md mx-auto mt-2 block  active:bg-accent active:text-secondary transition-colors  select-none"
           >
