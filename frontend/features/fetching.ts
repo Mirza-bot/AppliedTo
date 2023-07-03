@@ -1,42 +1,80 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import useStatusStore from "./store/status";
 
 const URL = "http://localhost:8210/api/";
 
-// Register and Login functions
+//Error handling in frontend
+const status = useStatusStore.getState();
 
+interface ErrorMessage {
+  message: string;
+}
+
+// Register and Login functions
 const register = async (email: string, name: string, password: string) => {
-  const request = await axios.post(
-    URL + "users/register",
-    {
-      email: email,
-      name: name,
-      password: password,
-    },
-    {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+  status.setLoading();
+  try {
+    const response = await axios.post(
+      URL + "user/register",
+      {
+        email: email,
+        name: name,
+        password: password,
       },
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    localStorage.setItem("user", JSON.stringify(response.data));
+    status.setSuccess();
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const statusCode = axiosError.response?.status;
+      const errorMessage = axiosError.response?.data as ErrorMessage;
+
+      status.setError();
+      status.setErrorCode(statusCode as number);
+      status.setMessage(errorMessage?.message);
     }
-  );
-  console.log(request.data.message);
-  return request.data;
+    throw error;
+  }
 };
 
 const login = async (email: string, password: string) => {
-  const request = await axios.post(
-    URL + "user/login",
-    {
-      email: email,
-      password: password,
-    },
-    {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+  status.setLoading();
+  try {
+    const response = await axios.post(
+      URL + "user/login",
+      {
+        email: email,
+        password: password,
       },
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    localStorage.setItem("user", JSON.stringify(response.data));
+    status.setSuccess();
+    localStorage.removeItem("inputMail");
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const statusCode = axiosError.response?.status;
+      const errorMessage = axiosError.response?.data as ErrorMessage;
+
+      status.setError();
+      status.setErrorCode(statusCode as number);
+      status.setMessage(errorMessage?.message);
     }
-  );
-  console.log(request.data);
-  return request.data;
+    throw error;
+  }
 };
 
 export { register, login };

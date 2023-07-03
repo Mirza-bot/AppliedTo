@@ -1,25 +1,29 @@
 import { useEffect, useState } from "react";
-import LoginForm from "../components/LoginForm";
-import RegisterForm from "../components/RegisterForm";
+import LoginForm from "../components/auth/LoginForm";
+import RegisterForm from "../components/auth/RegisterForm";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import useStatusStore from "../../features/store/status";
+import { useAuthStore } from "../../features/store/auth";
 
 function AuthPage() {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [registerView, setRegisterView] = useState(false);
 
-  const handleInput = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    action: React.Dispatch<React.SetStateAction<string>>
-  ) => {
-    action(event.target.value);
-  };
+  //States
+  const status = useStatusStore();
+  const authorized = useAuthStore();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-
-  const [registerView, setRegisterView] = useState(false);
+    if (status.isSuccess && authorized.user) {
+      // #####################################
+      // Keep on working from here, add the new site if user is logged in and authorized
+      // ######################################
+      navigate("/placeholder");
+    }
+  }, [status.isSuccess, authorized.user, navigate]);
 
   return (
     <motion.div

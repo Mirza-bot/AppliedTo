@@ -12,7 +12,6 @@ import userModel from "../models/userModel";
  */
 const registerUser = expressAsyncHandler(
   async (req: Request, res: Response) => {
-    console.log(!req.body.password);
     const { name, email, password } = <User>req.body;
     if (!email || !name || !password) {
       res.status(400);
