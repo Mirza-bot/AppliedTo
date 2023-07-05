@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useAuthStore } from "../../../features/store/auth";
-import CustomInput from "../CustomInput";
+import CustomInput from "../layout/CustomInput";
 
 function RegisterForm() {
   const [email, setEmail] = useState("");

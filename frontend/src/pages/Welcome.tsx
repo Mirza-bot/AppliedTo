@@ -1,18 +1,22 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useAuthStore } from "../../features/store/auth";
 import { motion } from "framer-motion";
 
 //assets
 import workflowGraphic from "../assets/workflow-graphic.svg";
 
 function Login() {
-  const [registerView, setRegisterView] = useState(false);
-
   const navigate = useNavigate();
+  const loggedIn = useAuthStore((state) => state.user);
 
   const redirect = (location: string) => {
     navigate(location);
   };
+
+  useEffect(() => {
+    if (loggedIn) navigate("/applications");
+  }, [loggedIn, navigate]);
 
   return (
     <motion.div
