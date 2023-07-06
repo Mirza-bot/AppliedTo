@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import LoginForm from "../components/auth/LoginForm";
-import RegisterForm from "../components/auth/RegisterForm";
+import LoginForm from "../components/forms/LoginForm";
+import RegisterForm from "../components/forms/RegisterForm";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import useStatusStore from "../../features/store/status";

@@ -1,7 +1,10 @@
 import axios, { AxiosError } from "axios";
 import useStatusStore from "./store/status";
 
-const URL = "http://localhost:8210/api/";
+//#######################################################################################
+// Before building for production this must be changed back to http://localhost:8210/api/
+//#######################################################################################
+const URL = "http://192.168.0.60:8210/api/";
 
 //Error handling in frontend
 const status = useStatusStore.getState();
@@ -77,4 +80,35 @@ const login = async (email: string, password: string) => {
   }
 };
 
-export { register, login };
+const getDocuments = async (userId: string) => {
+  status.setLoading();
+  try {
+    const response = await axios.post(
+      URL + "documents/read",
+      {
+        userId: userId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    console.log(response.data);
+    status.setSuccess();
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const statusCode = axiosError.response?.status;
+      const errorMessage = axiosError.response?.data as ErrorMessage;
+
+      status.setError();
+      status.setErrorCode(statusCode as number);
+      status.setMessage(errorMessage?.message);
+    }
+    throw error;
+  }
+};
+
+export { register, login, getDocuments };

@@ -1,4 +1,4 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { Application } from "../../shared/types";
 
 const applicationSchema = new Schema<Application>(

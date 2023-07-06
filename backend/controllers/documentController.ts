@@ -2,17 +2,38 @@ import expressAsyncHandler from "express-async-handler";
 import { Request, Response } from "express";
 import documentModel from "../models/documentModel";
 import { UserData } from "../../shared/types";
+import multer from "multer";
+import path from "path";
+import userModel from "../models/userModel";
+
+// const storage = multer.diskStorage({
+//   destination: (req, file, callback) => {
+//     callback(null, "documents");
+//   },
+//   filename: (req, file, callback) => {
+//     console.log(file);
+//     callback(null, Date.now() + path.extname(file.originalname));
+//   },
+// });
+
+// const upload = multer({ storage: storage });
 
 const addDocument = expressAsyncHandler(async (req: Request, res: Response) => {
   if (!req.file) {
     res.status(400).send("No file uploaded");
   }
   const fileData = req.file;
+
   const document = await documentModel.create({
     file: fileData?.buffer,
     name: fileData?.originalname,
     userId: req.body.userId,
   });
+
+  const user = await userModel.findByIdAndUpdate(req.body.userId, {
+    $push: { documents: document._id },
+  });
+
   if (document) {
     res.status(200).send(document);
   } else res.status(500).send("Document could not be saved.");

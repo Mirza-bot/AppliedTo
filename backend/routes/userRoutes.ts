@@ -7,7 +7,6 @@ import {
   setUserAvatar,
 } from "../controllers/userControllers";
 import { protect } from "../middleware/authMiddleware";
-import fileUpload from "../middleware/fileUploadMiddleware";
 
 const userRouter = express.Router();
 
@@ -19,6 +18,6 @@ userRouter.get("/", protect, getUserData);
 
 userRouter.put("/update", protect, editUserData);
 
-userRouter.put("/avatar", protect, fileUpload, setUserAvatar);
+userRouter.put("/avatar", protect, setUserAvatar);
 
 export default userRouter;

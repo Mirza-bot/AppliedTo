@@ -2,9 +2,14 @@ import { useState } from "react";
 import { AiFillStar, AiOutlineStar, AiOutlineEdit } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { TiArrowSync } from "react-icons/ti";
-import { motion } from "framer-motion";
 
 function ApplicationListItem() {
+  /**
+   * This Component checks if the ListItem gets moved via touch gesture to the left
+   * or to the right. Depending on the direction it sets the transitionX to show the
+   * buttons that overflow the viewport width.
+   * The directions are represented with numbers. 0 === Left; 1 === Idle(middle); 2 === Right
+   */
   const [swipeDirection, setSwipeDirection] = useState<number | null>(null);
   const [tilePosition, setTilePosition] = useState<number>(1);
   const [favorite, setFavorite] = useState<boolean>(false);
@@ -50,7 +55,6 @@ function ApplicationListItem() {
     setSwipeDirection(null);
   };
 
-  console.log(tilePosition);
   return (
     <div
       className={` h-24 bg-white flex-row flex transition-all ease-in-out ${
@@ -59,6 +63,9 @@ function ApplicationListItem() {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
+      onMouseDown={() => {
+        setTilePosition(1);
+      }}
       style={{ width: "160vw", transform: `translateX(${displayPosition()})` }}
     >
       <div className="flex flex-row w-4/12 my-4 ml-2 mr-1 gap-3 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">

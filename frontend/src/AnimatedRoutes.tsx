@@ -4,6 +4,7 @@ import ApplicationList from "./pages/ApplicationList";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import { AnimatePresence } from "framer-motion";
+import DocumentsView from "./pages/DocumentsView";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -14,6 +15,7 @@ function AnimatedRoutes() {
         <Route path="/" Component={Welcome} />
         <Route path="/login" Component={AuthPage} />
         <Route path="/applications" Component={ApplicationList} />
+        <Route path="/documents" Component={DocumentsView} />
       </Routes>
     </AnimatePresence>
   );

@@ -12,9 +12,7 @@ function App() {
     <Router>
       <ErrorNotification />
       <Navbar />
-      <div className="-translate-y-10">
-        {status.isLoading ? <LoadingSpinner /> : <AnimatedRoutes />}
-      </div>
+      {status.isLoading ? <LoadingSpinner /> : <AnimatedRoutes />}
     </Router>
   );
 }

@@ -24,7 +24,7 @@ function Login() {
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: -100, opacity: 0, transition: { duration: 0.2 } }}
     >
-      <div className="px-4">
+      <div className="px-4 mt-10">
         <div className=" mb-8 pb-3">
           <header className="text-3xl font-semibold ml-3">
             Organize your applications

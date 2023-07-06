@@ -34,10 +34,10 @@ const registerUser = expressAsyncHandler(
       name,
       email,
       password: hashedPassword,
-      documents: "null",
-      applications: "null",
-      settings: "null",
-      avatar: "null",
+      documents: [],
+      applications: [],
+      settings: {},
+      avatar: [],
     });
     if (user) {
       res.status(201).json({

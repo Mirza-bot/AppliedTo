@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { login, register } from "../fetching";
+import { UserData } from "../../../shared/types";
 
 interface State {
   user: null;
@@ -14,7 +15,7 @@ const storageData = JSON.parse(localStorage.getItem("user") as string);
 
 export const useAuthStore = create(
   devtools<State>((set) => ({
-    user: storageData ? storageData : null,
+    user: <UserData>storageData ? storageData : null,
     register: async (email: string, password: string, name: string) => {
       const response = await register(email, password, name);
       set({
