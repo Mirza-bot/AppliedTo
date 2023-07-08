@@ -64,7 +64,8 @@ function Navbar() {
               <IconButton
                 icon={<AiOutlineUnorderedList />}
                 passedClass={`p-1 ${
-                  currentRoute === "/applications" && "bg-secondary rounded-sm "
+                  currentRoute === "/applicationList" &&
+                  "bg-secondary rounded-sm "
                 }`}
               />
               <IconButton

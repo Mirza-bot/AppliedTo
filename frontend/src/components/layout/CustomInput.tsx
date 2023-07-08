@@ -16,7 +16,9 @@ interface Props {
 function CustomInput(props: Props) {
   const [value, setValue] = useState(props.value || "");
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setValue(event.target.value);
     if (props.event) {
       props.event(event.target.value);
@@ -35,9 +37,11 @@ function CustomInput(props: Props) {
       </div>
       {props.textarea ? (
         <textarea
+          onChange={handleChange}
           id={props.id}
           rows={4}
           cols={10}
+          value={value}
           className={`bg-white rounded mb-3 border-grey border-4 outline-none focus:border-accent focus:border-4 ${props.textareaClass}`}
         />
       ) : (

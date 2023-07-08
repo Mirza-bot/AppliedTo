@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import useStatusStore from "./store/status";
+import { Application } from "../../shared/types";
 
 //#######################################################################################
 // Before building for production this must be changed back to http://localhost:8210/api/
@@ -13,7 +14,9 @@ interface ErrorMessage {
   message: string;
 }
 
+//################################################################
 // Register and Login functions
+//################################################################
 const register = async (email: string, name: string, password: string) => {
   status.setLoading();
   try {
@@ -80,6 +83,74 @@ const login = async (email: string, password: string) => {
   }
 };
 
+//#############################################################
+// CRUD functions for Applications
+//#############################################################
+
+const createApplication = async (
+  token: string,
+  newApplication: Application
+) => {
+  status.setLoading();
+  try {
+    const response = await axios.post(
+      URL + "applications/create",
+      newApplication,
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    status.setSuccess();
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const statusCode = axiosError.response?.status;
+      const errorMessage = axiosError.response?.data as ErrorMessage;
+
+      status.setError();
+      status.setErrorCode(statusCode as number);
+      status.setMessage(errorMessage?.message);
+    }
+    throw error;
+  }
+};
+
+const getApplications = async (token: string, user: string) => {
+  status.setLoading();
+  try {
+    const response = await axios.get(URL + "/applications/read", {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        user: user,
+      },
+    });
+    status.setSuccess();
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const statusCode = axiosError.response?.status;
+      const errorMessage = axiosError.response?.data as ErrorMessage;
+
+      status.setError();
+      status.setErrorCode(statusCode as number);
+      status.setMessage(errorMessage?.message);
+    }
+    throw error;
+  }
+};
+
+//#############################################################
+// CRUD functions for Documents
+//#############################################################
+
 const getDocuments = async (token: string, user: string) => {
   status.setLoading();
   try {
@@ -108,4 +179,4 @@ const getDocuments = async (token: string, user: string) => {
   }
 };
 
-export { register, login, getDocuments };
+export { register, login, createApplication, getApplications, getDocuments };

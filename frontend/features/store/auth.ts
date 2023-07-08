@@ -4,7 +4,7 @@ import { login, register } from "../fetching";
 import { UserData } from "../../../shared/types";
 
 interface State {
-  user: null;
+  user: null | UserData;
   token: string;
   register: (email: string, password: string, name: string) => void;
   login: (email: string, password: string) => void;
@@ -27,6 +27,7 @@ export const useAuthStore = create(
     },
     login: async (email: string, password: string) => {
       const response = await login(email, password);
+      console.log(response);
       set({
         user: response,
       });

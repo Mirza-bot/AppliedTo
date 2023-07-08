@@ -21,7 +21,7 @@ function AuthPage() {
       // #####################################
       // Keep on working from here, add the new site if user is logged in and authorized
       // ######################################
-      navigate("/applications");
+      navigate("/applicationList");
     }
   }, [status.isSuccess, authorized.user, navigate]);
 

@@ -19,8 +19,8 @@ interface JobListing {
   jobTitle: string;
   companyName: string;
   jobDescription: string;
-  date: Date;
-  _id: string;
+  date?: Date;
+  _id?: string;
 }
 
 interface Application extends JobListing {
