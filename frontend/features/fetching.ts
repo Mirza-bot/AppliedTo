@@ -80,21 +80,18 @@ const login = async (email: string, password: string) => {
   }
 };
 
-const getDocuments = async (userId: string) => {
+const getDocuments = async (token: string, user: string) => {
   status.setLoading();
   try {
-    const response = await axios.post(
-      URL + "documents/read",
-      {
-        userId: userId,
+    const response = await axios.get(URL + "documents/read", {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer: ${token}`,
       },
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
-    );
-    console.log(response.data);
+      params: {
+        user: user,
+      },
+    });
     status.setSuccess();
     return response.data;
   } catch (error) {

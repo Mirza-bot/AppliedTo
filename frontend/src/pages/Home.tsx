@@ -15,7 +15,7 @@ function Login() {
   };
 
   useEffect(() => {
-    if (loggedIn) navigate("/applications");
+    if (loggedIn) navigate("/applicationList");
   }, [loggedIn, navigate]);
 
   return (

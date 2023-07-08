@@ -30,7 +30,7 @@ function LoginForm() {
             label="E-Mail"
             type="email"
             id="email"
-            labelColor="text-darkgrey"
+            labelClass="text-darkgrey"
             value={localStorage.getItem("inputMail") as string}
             event={setEmail}
           />
@@ -38,7 +38,7 @@ function LoginForm() {
             label="Password"
             type="password"
             id="password"
-            labelColor="text-darkgrey"
+            labelClass="text-darkgrey"
             event={setPassword}
           />
           <button

@@ -49,7 +49,8 @@ function RegisterForm() {
             type="email"
             id="email"
             event={setEmail}
-            labelColor="text-lightgrey"
+            labelClass="text-lightgrey"
+            inputClass="focus:border-secondary"
           />
 
           <CustomInput
@@ -57,7 +58,8 @@ function RegisterForm() {
             type="text"
             id="username"
             event={setUsername}
-            labelColor={`${nameError ? "text-red" : "text-lightgrey"}`}
+            labelClass={`${nameError ? "text-red" : "text-lightgrey"}`}
+            inputClass="focus:border-secondary"
           />
           {nameError && (
             <span className="text-red text-sm">
@@ -69,14 +71,16 @@ function RegisterForm() {
             type="password"
             id="password"
             event={setPassword}
-            labelColor="text-lightgrey"
+            labelClass="text-lightgrey"
+            inputClass="focus:border-secondary"
           />
           <CustomInput
             label="Repeat password"
             type="password"
             id="r-password"
             event={setRPassword}
-            labelColor={`${passwordError ? "text-red" : "text-lightgrey"}`}
+            labelClass={`${passwordError ? "text-red" : "text-lightgrey"}`}
+            inputClass="focus:border-secondary"
           />
           {passwordError && (
             <span className="text-red text-sm">
@@ -85,7 +89,7 @@ function RegisterForm() {
           )}
           <button
             type="submit"
-            className="bg-secondary text-accent text-xl font-medium w-9/12 h-12 rounded-md mx-auto mt-2 block  active:bg-accent active:text-secondary transition-colors  select-none"
+            className="bg-secondary text-black text-xl font-medium w-9/12 h-12 rounded-md mx-auto mt-2 block  active:bg-accent active:text-secondary transition-colors  select-none"
           >
             Register
           </button>

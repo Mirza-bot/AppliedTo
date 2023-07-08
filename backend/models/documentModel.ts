@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
-import { UserDocuments } from "../../shared/types";
+import { UserDocument } from "../../shared/types";
 
-const documentSchema = new Schema<UserDocuments>(
+const documentSchema = new Schema<UserDocument>(
   {
     userId: { type: String, required: true },
     name: { type: String, required: true },

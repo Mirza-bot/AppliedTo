@@ -1,14 +1,11 @@
-import { File } from "buffer";
-import { Types } from "mongoose";
-
 //every any is a placeholder
 interface User {
   email: string;
   name: string;
   password?: string;
   token?: string;
-  documents?: [Types.ObjectId] | [File];
-  applications?: [Types.ObjectId] | [File];
+  documents?: [string] | [File];
+  applications?: [string] | [File];
   settings?: Settings;
   avatar?: File;
 }
@@ -18,7 +15,7 @@ interface UserData extends User {
 }
 
 interface JobListing {
-  userId: Types.ObjectId;
+  userId: string;
   jobTitle: string;
   companyName: string;
   jobDescription: string;
@@ -44,10 +41,11 @@ interface Settings {
 /**
  * for cover letters and cv's
  */
-interface UserDocuments {
+interface UserDocument {
   userId: string;
+  id: string;
+  file: { type: string; data: Array<number> };
   name: string;
-  file: File;
 }
 
-export type { User, UserData, UserDocuments, Application, Notes };
+export type { User, UserData, UserDocument, Application, Notes };

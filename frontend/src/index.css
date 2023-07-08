@@ -6,6 +6,7 @@
   font-family: "Jost", sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  box-sizing: border-box;
 
   background-color: #f2f2f2;
   font-synthesis: none;

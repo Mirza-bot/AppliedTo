@@ -7,8 +7,10 @@ interface Props {
   placeholder?: string;
   value?: string;
   event?: (value: string) => void;
-  labelColor?: string;
-  textColor?: string;
+  labelClass?: string;
+  inputClass?: string;
+  textareaClass?: string;
+  textarea?: boolean;
 }
 
 function CustomInput(props: Props) {
@@ -26,19 +28,28 @@ function CustomInput(props: Props) {
       <div className="flex justify-between">
         <label
           htmlFor={props.id}
-          className={`text-left font-semibold ${props.labelColor}`}
+          className={`text-left ml-0.5 font-semibold ${props.labelClass}`}
         >
           {props.label}
         </label>
       </div>
-      <input
-        onChange={handleChange}
-        id={props.id}
-        type={props.type}
-        className="bg-white rounded text-xl mb-3"
-        placeholder={props.placeholder}
-        value={value}
-      />
+      {props.textarea ? (
+        <textarea
+          id={props.id}
+          rows={4}
+          cols={10}
+          className={`bg-white rounded mb-3 border-grey border-4 outline-none focus:border-accent focus:border-4 ${props.textareaClass}`}
+        />
+      ) : (
+        <input
+          onChange={handleChange}
+          id={props.id}
+          type={props.type}
+          className={`bg-white rounded text-xl mb-3 border-grey border-4 outline-none focus:border-accent focus:border-4 ${props.inputClass}`}
+          placeholder={props.placeholder}
+          value={value}
+        />
+      )}
     </div>
   );
 }

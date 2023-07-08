@@ -2,8 +2,11 @@ import { useState } from "react";
 import { AiFillStar, AiOutlineStar, AiOutlineEdit } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { TiArrowSync } from "react-icons/ti";
+import { useNavigate } from "react-router-dom";
 
 function ApplicationListItem() {
+  const navigate = useNavigate();
+
   /**
    * This Component checks if the ListItem gets moved via touch gesture to the left
    * or to the right. Depending on the direction it sets the transitionX to show the
@@ -55,6 +58,14 @@ function ApplicationListItem() {
     setSwipeDirection(null);
   };
 
+  const redirect = () => {
+    if (tilePosition !== 1) {
+      setTilePosition(1);
+    } else if (tilePosition === 1) {
+      navigate("/application");
+    }
+  };
+
   return (
     <div
       className={` h-24 bg-white flex-row flex transition-all ease-in-out ${
@@ -63,14 +74,12 @@ function ApplicationListItem() {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      onMouseDown={() => {
-        setTilePosition(1);
-      }}
+      onClick={redirect}
       style={{ width: "160vw", transform: `translateX(${displayPosition()})` }}
     >
-      <div className="flex flex-row w-4/12 my-4 ml-2 mr-1 gap-3 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+      <div className="flex flex-row w-4/12 my-4 ml-2 mr-1 gap-3 drop-shadow-slight">
         <button className="bg-grey w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center items-center">
-          <span className="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+          <span className="drop-shadow-slight">
             <AiOutlineEdit />
           </span>
         </button>
@@ -82,7 +91,7 @@ function ApplicationListItem() {
             favorite && "bg-opacity-50"
           } w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center items-center`}
         >
-          <span className="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+          <span className="drop-shadow-slight">
             <AiOutlineStar />
           </span>
         </button>
@@ -99,20 +108,20 @@ function ApplicationListItem() {
         </div>
         <div className="flex flex-col text-right justify-between py-2 pr-2">
           <span className="text-sm font-light">24.02.2023</span>
-          <span className="text-yellow flex justify-end text-2xl">
+          <span className="text-yellow flex justify-end text-2xl drop-shadow-slight">
             {favorite ? <AiFillStar /> : ""}
           </span>
           <span className="text-sm">Status text</span>
         </div>
       </div>
-      <div className="flex flex-row w-4/12 my-4 ml-1 mr-2 gap-3 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+      <div className="flex flex-row w-4/12 my-4 ml-1 mr-2 gap-3 drop-shadow-slight">
         <button className="bg-red w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center items-center">
-          <span className="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+          <span className="drop-shadow-slight">
             <BiTrash />
           </span>
         </button>
         <button className="bg-primary  w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center items-center">
-          <span className="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+          <span className="drop-shadow-slight">
             <TiArrowSync />
           </span>
         </button>
