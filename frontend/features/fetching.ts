@@ -211,6 +211,39 @@ const deleteApplication = async (
       },
     });
     status.setSuccess();
+    status.setMessage(response.data);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const statusCode = axiosError.response?.status;
+      const errorMessage = axiosError.response?.data as ErrorMessage;
+
+      status.setError();
+      status.setErrorCode(statusCode as number);
+      status.setMessage(errorMessage?.message);
+    }
+    throw error;
+  }
+};
+
+const editApplication = async (token: string, application: Application) => {
+  status.setLoading();
+  try {
+    const response = await axios.patch(
+      URL + "applications/edit",
+      {
+        ...application,
+      },
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    status.setSuccess();
+    status.setMessage(response.data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -265,4 +298,5 @@ export {
   getApplications,
   deleteApplication,
   getDocuments,
+  editApplication,
 };

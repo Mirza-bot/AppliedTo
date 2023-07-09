@@ -8,6 +8,7 @@ import { shallow } from "zustand/shallow";
 import useStatusStore from "../../features/store/status";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { AiOutlineFileAdd } from "react-icons/ai";
+import { motion } from "framer-motion";
 
 function ApplicationList() {
   const loading = useStatusStore((state) => state.isLoading);
@@ -20,40 +21,43 @@ function ApplicationList() {
     if (!user) {
       navigate("/login");
     } else {
-      setTimeout(() => {
-        getAllApplications();
-        console.log(applications);
-      }, 100);
+      getAllApplications();
     }
   }, []);
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
   if (applications?.length === 0) {
     return (
-      <div className="text-darkgrey">
-        <div className="h-screen p-5">
-          <h1 className="text-2xl font-semibold  ">No Applications yet?</h1>
-          <div className="font-semibold">
-            <span className="text-2xl">Create one now!</span>
-            <p className="text-xl mt-5">
-              You can create a new application by pressing the "Create
-              Application" button in the bottom left corner.
-            </p>
-            <div className="flex justify-center mt-5">
-              <span className="text-5xl ">{<AiOutlineFileAdd />}</span>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 100 }}
+        exit={{ opacity: 0, transition: { duration: 0.2 } }}
+      >
+        <div className="text-darkgrey">
+          <div className="h-screen p-5">
+            <h1 className="text-2xl font-semibold  ">No Applications yet?</h1>
+            <div className="font-semibold">
+              <span className="text-2xl">Create one now!</span>
+              <p className="text-xl mt-5">
+                You can create a new application by pressing the "Create
+                Application" button in the bottom left corner.
+              </p>
+              <div className="flex justify-center mt-5">
+                <span className="text-5xl ">{<AiOutlineFileAdd />}</span>
+              </div>
             </div>
           </div>
+          <ListMenu />
         </div>
-        <ListMenu />
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 100 }}
+      exit={{ opacity: 0, transition: { duration: 0.2 } }}
+    >
       <div className="flex flex-col gap-1 overflow-hidden min-h-screen">
         {applications?.map((application) => {
           return (
@@ -66,12 +70,13 @@ function ApplicationList() {
               createdAt={application.createdAt}
               status={application.status}
               appliedOver={application.appliedOver}
+              isFavorite={application.isFavorite}
             />
           );
         })}
       </div>
       <ListMenu />
-    </div>
+    </motion.div>
   );
 }
 export default ApplicationList;

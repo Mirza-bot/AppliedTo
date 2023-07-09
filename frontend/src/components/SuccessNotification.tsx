@@ -10,8 +10,8 @@ function SuccessNotification() {
   useEffect(() => {
     if (state.isSuccess) {
       toast.success(state.message, {
-        position: "bottom-right",
-        autoClose: 2500,
+        position: "top-right",
+        autoClose: 1500,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,

@@ -3,7 +3,6 @@ import Navbar from "./components/layout/Navbar";
 import AnimatedRoutes from "./AnimatedRoutes";
 import ErrorNotification from "./components/ErrorNotification";
 import useStatusStore from "../features/store/status";
-import LoadingSpinner from "./components/LoadingSpinner";
 
 function App() {
   const status = useStatusStore();

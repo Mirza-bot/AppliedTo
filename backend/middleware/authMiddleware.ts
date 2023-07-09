@@ -12,7 +12,6 @@ interface Token {
 const protect = expressAsyncHandler(
   async (req: Request, res: Response, next) => {
     let token;
-
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
@@ -30,11 +29,11 @@ const protect = expressAsyncHandler(
           .select("-password");
         next();
       } catch (error) {
-        console.log(error);
         res.status(401);
         throw new Error("Not authorized!");
       }
     } else {
+      res.status(401);
       throw new Error("No Token received. Please authorize again.");
     }
   }

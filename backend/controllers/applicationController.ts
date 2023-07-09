@@ -73,40 +73,47 @@ const getApplications = expressAsyncHandler(
  */
 const editApplication = expressAsyncHandler(
   async (req: Request, res: Response) => {
-    const request = <Application>req.body;
+    try {
+      const request = req.body;
+      const userData = req.body.user;
+      const user = await userModel.findById(userData._id);
+      const application = await applicationModel.findById(request._id);
 
-    const user = await userModel.findById(req.body.userId);
-    const application = await applicationModel.findById(request._id);
+      if (!application) {
+        res.status(400);
+        throw new Error(
+          "Application couldn't be found due to invalid request."
+        );
+      }
 
-    if (!application) {
+      if (!user) {
+        res.status(400);
+        throw new Error("No matching user found due to invalid data.");
+      }
+
+      if (user._id.toString() === application.userId?.toString()) {
+        await applicationModel.updateOne(
+          {
+            _id: request._id,
+          },
+          {
+            jobTitle: request.jobTitle,
+            companyName: request.companyName,
+            jobDescription: request.jobDescription,
+            appliedOver: request.appliedOver,
+            cvId: request.cvId,
+            clId: request.clId,
+            notes: request.notes,
+            isFavorite: request.isFavorite,
+          }
+        );
+        res.status(200).send("Successfully updated!");
+      } else {
+        throw new Error("User has no permission to edit this application.");
+      }
+    } catch (error) {
       res.status(400);
-      throw new Error("Application couldn't be found due to invalid request.");
-    }
-
-    if (!user) {
-      res.status(400);
-      throw new Error("No matching user found due to invalid data.");
-    }
-
-    if (user._id.toString() === application.userId?.toString()) {
-      await applicationModel.updateOne(
-        {
-          _id: request._id,
-        },
-        {
-          jobTitle: request.jobTitle,
-          companyName: request.companyName,
-          jobDescription: request.jobDescription,
-          appliedOver: request.appliedOver,
-          cvId: request.cvId,
-          clId: request.clId,
-          notes: request.notes,
-          isFavorite: request.isFavorite,
-        }
-      );
-      res.status(200).send("Successfully updated!");
-    } else {
-      throw new Error("User has no permission to edit this application.");
+      throw new Error("Invalid data");
     }
   }
 );

@@ -4,6 +4,7 @@ import {
   createApplication,
   getApplications,
   deleteApplication,
+  editApplication,
 } from "../fetching";
 import { Application } from "../../../shared/types";
 import { useAuthStore } from "./auth";
@@ -23,6 +24,7 @@ interface State {
   clearActiveApplication: () => void;
   getAllApplications: () => void;
   deleteApplication: (applicationId: string) => void;
+  editApplication: (application: Application) => void;
 }
 
 export const useApplicationStore = create(
@@ -50,6 +52,7 @@ export const useApplicationStore = create(
       const token = useAuthStore.getState().token;
       const response = await createApplication(token as string, newApplication);
       set({ activeApplication: response.data });
+      get().getAllApplications();
     },
     setActiveApplication: (targetApplication: Application) => {
       set({ activeApplication: targetApplication });
@@ -71,11 +74,13 @@ export const useApplicationStore = create(
     deleteApplication: async (applicationId: string) => {
       const token = useAuthStore.getState().token;
       const userId = useAuthStore.getState()._id;
-      const response = await deleteApplication(
-        token as string,
-        userId as string,
-        applicationId
-      );
+      await deleteApplication(token as string, userId as string, applicationId);
+      get().getAllApplications();
+    },
+    editApplication: async (application: Application) => {
+      const token = useAuthStore.getState().token;
+      await editApplication(token as string, application);
+      get().getAllApplications();
     },
   }))
 );

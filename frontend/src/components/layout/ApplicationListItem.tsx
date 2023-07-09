@@ -1,19 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiFillStar, AiOutlineStar, AiOutlineEdit } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { TiArrowSync } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
 import { Application } from "../../../../shared/types";
 import { useApplicationStore } from "../../../features/store/applications";
+import { format, parseISO } from "date-fns";
 
 function ApplicationListItem(props: Application) {
+  const [favorite, setFavorite] = useState<boolean>(false);
+
+  //Navigation
   const navigate = useNavigate();
+
+  const redirect = () => {
+    if (tilePosition !== 1) {
+      setTilePosition(1);
+    } else if (tilePosition === 1) {
+      setActiveApplication(props);
+      navigate("/application");
+    }
+  };
+
+  useEffect(() => {
+    setFavorite(props.isFavorite as boolean);
+  }, [props.isFavorite]);
+
+  // Date Formatting
+  function formatDate(dateString: string) {
+    const date = parseISO(dateString);
+    const formattedDate = format(date, "dd.MM.yyyy");
+    return formattedDate;
+  }
+
+  //State mutations
   const setActiveApplication = useApplicationStore(
     (state) => state.setActiveApplication
   );
   const deleteApplication = useApplicationStore(
     (state) => state.deleteApplication
   );
+  const editApplication = useApplicationStore((state) => state.editApplication);
+
+  const editFavorite = (isFavorite: boolean) => {
+    const updatedApplication = {
+      ...props,
+      isFavorite: isFavorite,
+    };
+    editApplication(updatedApplication);
+  };
 
   /**
    * This Component checks if the ListItem gets moved via touch gesture to the left
@@ -23,7 +58,6 @@ function ApplicationListItem(props: Application) {
    */
   const [swipeDirection, setSwipeDirection] = useState<number | null>(null);
   const [tilePosition, setTilePosition] = useState<number>(1);
-  const [favorite, setFavorite] = useState<boolean>(false);
 
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     const touch = event.touches[0];
@@ -66,15 +100,6 @@ function ApplicationListItem(props: Application) {
     setSwipeDirection(null);
   };
 
-  const redirect = () => {
-    if (tilePosition !== 1) {
-      setTilePosition(1);
-    } else if (tilePosition === 1) {
-      setActiveApplication(props);
-      navigate("/application");
-    }
-  };
-
   return (
     <div
       className={` h-24 bg-white flex-row flex transition-all ease-in-out ${
@@ -94,7 +119,7 @@ function ApplicationListItem(props: Application) {
         </button>
         <button
           onClick={() => {
-            setFavorite(!favorite);
+            editFavorite(!favorite);
           }}
           className={`bg-yellow ${
             favorite && "bg-opacity-50"
@@ -116,7 +141,9 @@ function ApplicationListItem(props: Application) {
           <span className="text-sm font-light">{props.appliedOver}</span>
         </div>
         <div className="flex flex-col text-right justify-between py-2 pr-2">
-          <span className="text-sm font-light">{props.createdAt}</span>
+          <span className="text-sm font-light">
+            {formatDate(props.createdAt as string)}
+          </span>
           <span className="text-yellow flex justify-end text-2xl drop-shadow-slight">
             {favorite ? <AiFillStar /> : ""}
           </span>
