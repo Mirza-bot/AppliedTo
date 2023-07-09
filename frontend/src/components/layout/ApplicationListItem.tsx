@@ -3,15 +3,23 @@ import { AiFillStar, AiOutlineStar, AiOutlineEdit } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { TiArrowSync } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
+import { Application } from "../../../../shared/types";
+import { useApplicationStore } from "../../../features/store/applications";
 
-function ApplicationListItem() {
+function ApplicationListItem(props: Application) {
   const navigate = useNavigate();
+  const setActiveApplication = useApplicationStore(
+    (state) => state.setActiveApplication
+  );
+  const deleteApplication = useApplicationStore(
+    (state) => state.deleteApplication
+  );
 
   /**
    * This Component checks if the ListItem gets moved via touch gesture to the left
    * or to the right. Depending on the direction it sets the transitionX to show the
    * buttons that overflow the viewport width.
-   * The directions are represented with numbers. 0 === Left; 1 === Idle(middle); 2 === Right
+   * The directions are represented with numbers. 0 === Left; 1 === Middle(Idle); 2 === Right
    */
   const [swipeDirection, setSwipeDirection] = useState<number | null>(null);
   const [tilePosition, setTilePosition] = useState<number>(1);
@@ -62,6 +70,7 @@ function ApplicationListItem() {
     if (tilePosition !== 1) {
       setTilePosition(1);
     } else if (tilePosition === 1) {
+      setActiveApplication(props);
       navigate("/application");
     }
   };
@@ -102,20 +111,25 @@ function ApplicationListItem() {
         style={{ width: "200vw" }}
       >
         <div className="flex-col flex justify-between py-2 pl-2 overflow-hidden sm:px-5">
-          <span className="text-lg font-medium">Position Title</span>
-          <span className="text-lg font-semibold">Company Name</span>
-          <span className="text-sm font-light">AppliedOver</span>
+          <span className="text-lg font-medium">{props.jobTitle}</span>
+          <span className="text-lg font-semibold">{props.companyName}</span>
+          <span className="text-sm font-light">{props.appliedOver}</span>
         </div>
         <div className="flex flex-col text-right justify-between py-2 pr-2">
-          <span className="text-sm font-light">24.02.2023</span>
+          <span className="text-sm font-light">{props.createdAt}</span>
           <span className="text-yellow flex justify-end text-2xl drop-shadow-slight">
             {favorite ? <AiFillStar /> : ""}
           </span>
-          <span className="text-sm">Status text</span>
+          <span className="text-sm">{props.status}</span>
         </div>
       </div>
       <div className="flex flex-row w-4/12 my-4 ml-1 mr-2 gap-3 drop-shadow-slight">
-        <button className="bg-red w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center items-center">
+        <button
+          onClick={() => {
+            deleteApplication(props._id as string);
+          }}
+          className="bg-red w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center items-center"
+        >
           <span className="drop-shadow-slight">
             <BiTrash />
           </span>

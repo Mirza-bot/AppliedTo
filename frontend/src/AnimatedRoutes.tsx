@@ -9,6 +9,7 @@ import AuthPage from "./pages/AuthPage";
 import ApplicationList from "./pages/ApplicationList";
 import DocumentsView from "./pages/DocumentView";
 import ApplicationEditor from "./pages/ApplicationEditor";
+import ApplicationView from "./pages/ApplicationView";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -19,7 +20,8 @@ function AnimatedRoutes() {
         <Route path="/" Component={Home} />
         <Route path="/login" Component={AuthPage} />
         <Route path="/applicationList" Component={ApplicationList} />
-        <Route path="/applications/new" Component={ApplicationEditor} />
+        <Route path="/application/new" Component={ApplicationEditor} />
+        <Route path="/application" Component={ApplicationView} />
         <Route path="/documents" Component={DocumentsView} />
       </Routes>
     </AnimatePresence>

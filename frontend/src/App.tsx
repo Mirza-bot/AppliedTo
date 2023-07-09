@@ -12,7 +12,7 @@ function App() {
     <Router>
       <ErrorNotification />
       <Navbar />
-      {status.isLoading ? <LoadingSpinner /> : <AnimatedRoutes />}
+      <AnimatedRoutes />
     </Router>
   );
 }

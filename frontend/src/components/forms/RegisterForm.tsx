@@ -2,6 +2,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useAuthStore } from "../../../features/store/auth";
 import CustomInput from "../layout/CustomInput";
+import useStatusStore from "../../../features/store/status";
+import LoadingSpinner from "../LoadingSpinner";
 
 function RegisterForm() {
   const [email, setEmail] = useState("");
@@ -13,6 +15,7 @@ function RegisterForm() {
 
   //State functions
   const registerUser = useAuthStore((state) => state.register);
+  const loading = useStatusStore((state) => state.isLoading);
 
   const handleSubmit = () => {
     setNameError(false);
@@ -28,6 +31,10 @@ function RegisterForm() {
       registerUser(email, password, username);
     }
   };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <motion.div

@@ -4,12 +4,14 @@ import { AiOutlineFileSearch, AiOutlineUnorderedList } from "react-icons/ai";
 import { FiSettings } from "react-icons/fi";
 import { BiArrowBack } from "react-icons/bi";
 import IconButton from "./IconButton";
+import { useAuthStore } from "../../../features/store/auth";
 
 function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentRoute = location.pathname;
   const [navButtons, setNavButtons] = useState<string>("none");
+  const authorized = useAuthStore((state) => state._id);
 
   const redirect = (location: string) => {
     navigate(location);
@@ -19,8 +21,9 @@ function Navbar() {
     if (currentRoute === "/applicationList") {
       setNavButtons("list");
     } else if (
-      currentRoute === "/applications/new" ||
-      currentRoute === "/applications/edit"
+      currentRoute === "/application/new" ||
+      currentRoute === "/application/edit" ||
+      currentRoute === "/application"
     ) {
       setNavButtons("application");
     } else {
@@ -35,7 +38,9 @@ function Navbar() {
         {navButtons === "none" && (
           <h1
             onClick={() => {
-              redirect("/");
+              if (!authorized) {
+                redirect("/");
+              }
             }}
             className="drop-shadow-slight text-3xl text-white absolute bottom-3 w-full text-center"
           >
@@ -47,20 +52,15 @@ function Navbar() {
           <div>
             <h1
               onClick={() => {
-                redirect("/");
+                if (!authorized) {
+                  redirect("/");
+                }
               }}
               className="text-2xl text-white absolute bottom-4 left-5 drop-shadow-slight"
             >
               Applied<strong className="text-black">To</strong>
             </h1>
-            <div className="text-3xl absolute bottom-3.5 right-5 flex justify-between w-40 text-white">
-              <IconButton
-                icon={<AiOutlineFileSearch />}
-                passedClass={`p-1 ${
-                  currentRoute === "/joblistings" && "bg-secondary rounded-sm "
-                }`}
-              />
-
+            <div className="text-3xl absolute bottom-3.5 right-5 flex justify-between w-24 text-white">
               <IconButton
                 icon={<AiOutlineUnorderedList />}
                 passedClass={`p-1 ${
@@ -82,7 +82,9 @@ function Navbar() {
           <div>
             <h1
               onClick={() => {
-                redirect("/");
+                if (!authorized) {
+                  redirect("/");
+                }
               }}
               className="text-2xl text-white absolute bottom-4 left-5 drop-shadow-slight"
             >

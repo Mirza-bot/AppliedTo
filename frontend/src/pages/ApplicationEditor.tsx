@@ -4,7 +4,7 @@ function ApplicationEditor() {
   return (
     <div className="select-none">
       <h1 className="text-2xl mt-7 ml-5 font-medium ">
-        Create a new Application
+        Create a new application
       </h1>
       <div className="mt-16 mx-5">
         <ApplicationForm />

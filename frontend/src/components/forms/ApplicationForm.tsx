@@ -3,6 +3,7 @@ import { useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 import Switch from "react-switch";
 import { useApplicationStore } from "../../../features/store/applications";
+import { useNavigate } from "react-router-dom";
 
 function ApplicationForm() {
   const saveApplication = useApplicationStore().saveApplication;
@@ -11,13 +12,19 @@ function ApplicationForm() {
   const [companyName, setCompanyName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [appliedOver, setAppliedOver] = useState<string>("");
+  const [status, setStatus] = useState<string>("Applied");
 
   // Form Control
   const [companyError, setCompanyError] = useState<boolean>(false);
   const [titleError, setTitleError] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleSwitch = (checked: boolean) => {
     setFavorite(checked);
+  };
+
+  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setStatus(event.target.value);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -35,7 +42,15 @@ function ApplicationForm() {
     }
     setCompanyError(false);
     setTitleError(false);
-    saveApplication(jobTitle, companyName, description, appliedOver, favorite);
+    saveApplication(
+      jobTitle,
+      companyName,
+      description,
+      appliedOver,
+      favorite,
+      status
+    );
+    navigate(-1);
   };
 
   return (
@@ -106,6 +121,23 @@ function ApplicationForm() {
               checked={favorite}
             />
           </label>
+        </div>
+        <div className="bg-white p-2 rounded-md absolute left-5 top-36">
+          <label htmlFor="status">Status:</label>
+          <select
+            onChange={handleStatusChange}
+            value={status}
+            className="ml-3"
+            name="status"
+            id="status"
+          >
+            <option value="Applied">Applied</option>
+            <option value="Interviewing">Interviewing</option>
+            <option value="Ghosted">Ghosted</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Archived">Archived</option>
+            <option value="Accepted">Accepted</option>
+          </select>
         </div>
         <button
           type="submit"

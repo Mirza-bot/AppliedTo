@@ -21,6 +21,7 @@ const setApplication = expressAsyncHandler(
       clId: request.clId,
       notes: request.notes,
       isFavorite: request.isFavorite,
+      status: request.status,
     });
 
     if (application) {
@@ -31,6 +32,7 @@ const setApplication = expressAsyncHandler(
         jobDescription: application.jobDescription,
         notes: application.notes,
         isFavorite: application.isFavorite,
+        status: request.status,
       });
     } else {
       res.status(400);
@@ -40,38 +42,27 @@ const setApplication = expressAsyncHandler(
 );
 
 /**
- * searches the database for the object with same id
+ * searches the database for all documents that match the userId param
  */
-const getApplication = expressAsyncHandler(
+const getApplications = expressAsyncHandler(
   async (req: Request, res: Response) => {
-    const request = <Application>req.body;
+    try {
+      const userId = req.body.user._id;
 
-    const user = <UserData>await userModel.findById(req.body.userId);
-    const application = <Application>(
-      await applicationModel.findById(request._id)
-    );
+      const user = await userModel.findById(userId);
 
-    if (!user) {
-      res.status(400);
-      throw new Error("No matching user found due to invalid data.");
-    }
+      if (!user) {
+        res
+          .status(400)
+          .json({ error: "No matching user found due to invalid data." });
+        return;
+      }
 
-    if (!application) {
-      res.status(400);
-      throw new Error("Application couldn't be found due to invalid request.");
-    }
+      const applications = await applicationModel.find({ userId: user._id });
 
-    if (user._id.toString() === application.userId.toString()) {
-      res.status(200).json({
-        _id: application._id,
-        jobTitle: application.jobTitle,
-        companyName: application.companyName,
-        jobDescription: application.jobDescription,
-        notes: application.notes,
-        isFavorite: application.isFavorite,
-      });
-    } else {
-      throw new Error("User has no permission to read this application.");
+      res.status(200).json(applications);
+    } catch (error) {
+      res.status(500).json({ error: "Internal server error." });
     }
   }
 );
@@ -97,7 +88,7 @@ const editApplication = expressAsyncHandler(
       throw new Error("No matching user found due to invalid data.");
     }
 
-    if (user._id.toString() === application.userId.toString()) {
+    if (user._id.toString() === application.userId?.toString()) {
       await applicationModel.updateOne(
         {
           _id: request._id,
@@ -124,7 +115,7 @@ const deleteApplication = expressAsyncHandler(
   async (req: Request, res: Response) => {
     const request = <Application>req.body;
 
-    const user = await userModel.findById(req.body.userId);
+    const user = await userModel.findById(request.userId);
     const application = await applicationModel.findById(request._id);
 
     if (!application) {
@@ -137,15 +128,16 @@ const deleteApplication = expressAsyncHandler(
       throw new Error("No matching user found due to invalid data.");
     }
 
-    const isAuthorizedToDelete = user._id === application.userId.toString();
+    const isAuthorizedToDelete =
+      user._id.toString() === application.userId?.toString();
 
-    if (isAuthorizedToDelete) {
+    if (!isAuthorizedToDelete) {
+      throw new Error("User has no permission to delete this application.");
+    } else {
       await applicationModel.deleteOne({ _id: application._id });
       res.status(200).send("Successfully deleted!");
-    } else {
-      throw new Error("User has no permission to delete this application.");
     }
   }
 );
 
-export { setApplication, getApplication, editApplication, deleteApplication };
+export { setApplication, getApplications, editApplication, deleteApplication };

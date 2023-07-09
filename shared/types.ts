@@ -4,9 +4,9 @@ interface User {
   name: string;
   password?: string;
   token?: string;
-  documents?: [string] | [File];
-  applications?: [string] | [File];
-  settings?: Settings;
+  documents?: string[];
+  applications?: string[];
+  settings?: string[];
   avatar?: File;
 }
 
@@ -15,11 +15,11 @@ interface UserData extends User {
 }
 
 interface JobListing {
-  userId: string;
+  userId?: string;
   jobTitle: string;
   companyName: string;
   jobDescription: string;
-  date?: Date;
+  createdAt?: string;
   _id?: string;
 }
 
@@ -29,14 +29,10 @@ interface Application extends JobListing {
   clId?: string;
   notes?: Notes;
   isFavorite?: boolean;
+  status?: string;
 }
 
 type Notes = [note: string];
-
-interface Settings {
-  darkMode: boolean;
-  searchPreferences: Object;
-}
 
 /**
  * for cover letters and cv's

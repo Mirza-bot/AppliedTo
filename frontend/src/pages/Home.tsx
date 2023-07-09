@@ -8,7 +8,7 @@ import workflowGraphic from "../assets/workflow-graphic.svg";
 
 function Login() {
   const navigate = useNavigate();
-  const loggedIn = useAuthStore((state) => state.user);
+  const loggedIn = useAuthStore((state) => state._id);
 
   const redirect = (location: string) => {
     navigate(location);

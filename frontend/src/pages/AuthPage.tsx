@@ -5,25 +5,29 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import useStatusStore from "../../features/store/status";
 import { useAuthStore } from "../../features/store/auth";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 function AuthPage() {
   const [registerView, setRegisterView] = useState(false);
 
-  //States
-  const status = useStatusStore();
-  const authorized = useAuthStore();
+  const authorized = useAuthStore((state) => state._id);
+  const loading = useStatusStore((state) => state.isLoading);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (status.isSuccess && authorized.user) {
+    if (authorized) {
       // #####################################
       // Keep on working from here, add the new site if user is logged in and authorized
       // ######################################
       navigate("/applicationList");
     }
-  }, [status.isSuccess, authorized.user, navigate]);
+  }, [authorized, navigate]);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <motion.div

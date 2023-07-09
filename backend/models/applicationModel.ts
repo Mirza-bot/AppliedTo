@@ -18,6 +18,7 @@ const applicationSchema = new Schema<Application>(
     userId: { type: String, required: true },
     notes: { type: Array, required: false },
     isFavorite: { type: Boolean, required: false },
+    status: { type: String, required: false },
   },
   { timestamps: true }
 );

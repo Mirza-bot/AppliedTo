@@ -35,6 +35,7 @@ const register = async (email: string, name: string, password: string) => {
     );
     localStorage.setItem("user", JSON.stringify(response.data));
     status.setSuccess();
+    status.setMessage("Registered");
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -67,6 +68,7 @@ const login = async (email: string, password: string) => {
     );
     localStorage.setItem("user", JSON.stringify(response.data));
     status.setSuccess();
+    status.setMessage("Logged in");
     localStorage.removeItem("inputMail");
     return response.data;
   } catch (error) {
@@ -82,6 +84,48 @@ const login = async (email: string, password: string) => {
     throw error;
   }
 };
+
+// OF NO USE FOR NOW!
+// const updateUser = async (
+//   token: string,
+//   name: string,
+//   applications: string[],
+//   settings: string[],
+//   documents: string[]
+// ) => {
+//   status.setLoading();
+//   console.log(applications);
+//   try {
+//     const response = await axios.put(
+//       URL + "user/update",
+//       {
+//         name: name,
+//         applications: applications,
+//         settings: settings,
+//         documents: documents,
+//       },
+//       {
+//         headers: {
+//           "Content-Type": "application/x-www-form-urlencoded",
+//           Authorization: `Bearer ${token}`,
+//         },
+//       }
+//     );
+//     status.setSuccess();
+//     return response.data;
+//   } catch (error) {
+//     if (axios.isAxiosError(error)) {
+//       const axiosError = error as AxiosError;
+//       const statusCode = axiosError.response?.status;
+//       const errorMessage = axiosError.response?.data as ErrorMessage;
+
+//       status.setError();
+//       status.setErrorCode(statusCode as number);
+//       status.setMessage(errorMessage?.message);
+//     }
+//     throw error;
+//   }
+// };
 
 //#############################################################
 // CRUD functions for Applications
@@ -103,6 +147,36 @@ const createApplication = async (
         },
       }
     );
+
+    status.setSuccess();
+    status.setMessage("Application created");
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const statusCode = axiosError.response?.status;
+      const errorMessage = axiosError.response?.data as ErrorMessage;
+
+      status.setError();
+      status.setErrorCode(statusCode as number);
+      status.setMessage(errorMessage?.message);
+    }
+    throw error;
+  }
+};
+
+const getApplications = async (token: string, userId: string) => {
+  status.setLoading();
+  try {
+    const response = await axios.get(URL + "applications/read", {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        userId: userId,
+      },
+    });
     status.setSuccess();
     return response.data;
   } catch (error) {
@@ -119,16 +193,21 @@ const createApplication = async (
   }
 };
 
-const getApplications = async (token: string, user: string) => {
+const deleteApplication = async (
+  token: string,
+  userId: string,
+  applicationId: string
+) => {
   status.setLoading();
   try {
-    const response = await axios.get(URL + "/applications/read", {
+    const response = await axios.delete(URL + "applications/delete", {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         Authorization: `Bearer ${token}`,
       },
-      params: {
-        user: user,
+      data: {
+        userId: userId,
+        _id: applicationId,
       },
     });
     status.setSuccess();
@@ -179,4 +258,11 @@ const getDocuments = async (token: string, user: string) => {
   }
 };
 
-export { register, login, createApplication, getApplications, getDocuments };
+export {
+  register,
+  login,
+  createApplication,
+  getApplications,
+  deleteApplication,
+  getDocuments,
+};

@@ -8,7 +8,7 @@ function LoadingSpinner() {
   const styles: Styles = {
     loadingSpinnerContainer: {
       position: "absolute",
-      top: "30vh",
+      top: 0,
       right: 0,
       bottom: 0,
       left: 0,

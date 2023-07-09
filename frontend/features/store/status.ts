@@ -43,6 +43,7 @@ export const useStatusStore = create(
         isSuccess: false,
         isError: false,
         message: null,
+        errorCode: null,
       });
     },
   }))

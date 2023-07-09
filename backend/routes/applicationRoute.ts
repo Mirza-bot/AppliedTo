@@ -1,7 +1,7 @@
 import express from "express";
 import {
   setApplication,
-  getApplication,
+  getApplications,
   editApplication,
   deleteApplication,
 } from "../controllers/applicationController";
@@ -11,7 +11,7 @@ const applicationRouter = express.Router();
 
 applicationRouter.post("/create", protect, setApplication);
 
-applicationRouter.get("/read", protect, getApplication);
+applicationRouter.get("/read", protect, getApplications);
 
 applicationRouter.patch("/edit", protect, editApplication);
 

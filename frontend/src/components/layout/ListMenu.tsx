@@ -9,7 +9,7 @@ function ListMenu() {
         <IconButton
           icon={<AiOutlineFileAdd />}
           passedClass="px-5"
-          route="/applications/new"
+          route="/application/new"
         />
         <IconButton icon={<AiOutlineSearch />} passedClass="px-5" />
         <IconButton icon={<GiSettingsKnobs />} passedClass="px-5" />

@@ -82,7 +82,7 @@ const loginUser = expressAsyncHandler(async (req: Request, res: Response) => {
       token: generateToken(user._id),
       documents: user.documents,
       settings: user.settings,
-      avatar: user.avatar,
+      applications: user.applications,
     });
   } else {
     res.status(401);
@@ -105,21 +105,27 @@ const getUserData = (req: Request, res: Response) => {
     name: request.name,
     documents: request.documents,
     settings: request.settings,
-    avatar: request.avatar,
+    applications: request.applications,
   };
   res.status(200).json(user);
 };
 
 const editUserData = expressAsyncHandler(
   async (req: Request, res: Response) => {
-    const request = <UserData>req.body;
-    await userModel.findByIdAndUpdate(request._id.toString(), {
-      name: request.name,
-      applications: request.applications,
-      settings: request.settings,
-      documents: request.documents,
-    });
-    res.status(200).json(request);
+    try {
+      const user = req.body.user;
+      console.log(user);
+      await userModel.findByIdAndUpdate(user._id.toString(), {
+        name: user.name,
+        applications: user.applications,
+        settings: user.settings,
+        documents: user.documents,
+      });
+      res.status(200).json(req.body);
+    } catch (error) {
+      res.status(400);
+      throw new Error("Invalid data.");
+    }
   }
 );
 

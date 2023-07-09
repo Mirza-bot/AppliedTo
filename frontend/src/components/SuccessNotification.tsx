@@ -3,13 +3,13 @@ import { useStatusStore } from "../../features/store/status";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/ReactToastify.css";
 
-function ErrorNotification() {
+function SuccessNotification() {
   const state = useStatusStore((state) => state);
   const resetStatus = useStatusStore((state) => state.resetStatus);
 
   useEffect(() => {
-    if (state.isError) {
-      toast.error(state.message, {
+    if (state.isSuccess) {
+      toast.success(state.message, {
         position: "bottom-right",
         autoClose: 2500,
         hideProgressBar: true,
@@ -21,9 +21,9 @@ function ErrorNotification() {
       });
     }
     resetStatus();
-  }, [state.isError, state.message, resetStatus]);
+  }, [state.isSuccess, state.message, resetStatus]);
 
   return <ToastContainer />;
 }
 
-export default ErrorNotification;
+export default SuccessNotification;
