@@ -5,24 +5,25 @@ import { useNavigate } from "react-router-dom";
 import ListMenu from "../components/layout/ListMenu";
 import { useApplicationStore } from "../../features/store/applications";
 import { shallow } from "zustand/shallow";
-import useStatusStore from "../../features/store/status";
-import LoadingSpinner from "../components/LoadingSpinner";
 import { AiOutlineFileAdd } from "react-icons/ai";
 import { motion } from "framer-motion";
 
 function ApplicationList() {
-  const loading = useStatusStore((state) => state.isLoading);
   const navigate = useNavigate();
   const user = useAuthStore((state) => state._id);
   const applications = useApplicationStore((state) => state.applications);
-  const { getAllApplications } = useApplicationStore((state) => state, shallow);
+  const getApplications = useApplicationStore(
+    (state) => state.sortApplicationsBy,
+    shallow
+  );
 
   useEffect(() => {
     if (!user) {
       navigate("/login");
     } else {
-      getAllApplications();
+      getApplications("isFavorite");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (applications?.length === 0) {

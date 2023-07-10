@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 import { AiFillStar, AiOutlineStar, AiOutlineEdit } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { TiArrowSync } from "react-icons/ti";
@@ -6,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Application } from "../../../../shared/types";
 import { useApplicationStore } from "../../../features/store/applications";
 import { format, parseISO } from "date-fns";
+import Modal from "../Modal";
 
 function ApplicationListItem(props: Application) {
   const [favorite, setFavorite] = useState<boolean>(false);
@@ -16,11 +18,14 @@ function ApplicationListItem(props: Application) {
   const redirect = () => {
     if (tilePosition !== 1) {
       setTilePosition(1);
-    } else if (tilePosition === 1) {
+    } else if (tilePosition === 1 && modalOpen === false) {
       setActiveApplication(props);
       navigate("/application");
     }
   };
+
+  // Modal for "Delete" permission
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     setFavorite(props.isFavorite as boolean);
@@ -111,6 +116,14 @@ function ApplicationListItem(props: Application) {
       onClick={redirect}
       style={{ width: "160vw", transform: `translateX(${displayPosition()})` }}
     >
+      {modalOpen &&
+        ReactDOM.createPortal(
+          <Modal
+            onDelete={() => deleteApplication(props._id as string)}
+            onCancel={() => setModalOpen(false)}
+          />,
+          document.getElementById("root") as Element
+        )}
       <div className="flex flex-row w-4/12 my-4 ml-2 mr-1 gap-3 drop-shadow-slight">
         <button className="bg-grey w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center items-center">
           <span className="drop-shadow-slight">
@@ -153,7 +166,7 @@ function ApplicationListItem(props: Application) {
       <div className="flex flex-row w-4/12 my-4 ml-1 mr-2 gap-3 drop-shadow-slight">
         <button
           onClick={() => {
-            deleteApplication(props._id as string);
+            setModalOpen(true);
           }}
           className="bg-red w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center items-center"
         >

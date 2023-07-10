@@ -32,6 +32,8 @@ interface Application extends JobListing {
   status?: string;
 }
 
+interface ApplicationArray extends Array<Application> {}
+
 type Notes = [note: string];
 
 /**
@@ -44,4 +46,11 @@ interface UserDocument {
   name: string;
 }
 
-export type { User, UserData, UserDocument, Application, Notes };
+export type {
+  User,
+  UserData,
+  UserDocument,
+  Application,
+  ApplicationArray,
+  Notes,
+};

@@ -1,5 +1,5 @@
 import { AiOutlineFileAdd, AiOutlineSearch } from "react-icons/ai";
-import { GiSettingsKnobs } from "react-icons/gi";
+import { BsSortNumericDown } from "react-icons/bs";
 import IconButton from "./IconButton";
 
 function ListMenu() {
@@ -12,7 +12,7 @@ function ListMenu() {
           route="/application/new"
         />
         <IconButton icon={<AiOutlineSearch />} passedClass="px-5" />
-        <IconButton icon={<GiSettingsKnobs />} passedClass="px-5" />
+        <IconButton icon={<BsSortNumericDown />} passedClass="px-5" />
       </div>
     </div>
   );

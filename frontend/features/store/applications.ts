@@ -6,12 +6,12 @@ import {
   deleteApplication,
   editApplication,
 } from "../fetching";
-import { Application } from "../../../shared/types";
+import { Application, ApplicationArray } from "../../../shared/types";
 import { useAuthStore } from "./auth";
 
 interface State {
   activeApplication: Application | null;
-  applications: Application[] | null;
+  applications: ApplicationArray;
   saveApplication: (
     jobTitle: string,
     companyName: string,
@@ -22,15 +22,16 @@ interface State {
   ) => void;
   setActiveApplication: (application: Application) => void;
   clearActiveApplication: () => void;
-  getAllApplications: () => void;
+  getAllApplications: () => Promise<ApplicationArray>;
   deleteApplication: (applicationId: string) => void;
   editApplication: (application: Application) => void;
+  sortApplicationsBy: (sortBy?: string) => void;
 }
 
 export const useApplicationStore = create(
   devtools<State>((set, get) => ({
     activeApplication: null,
-    applications: null,
+    applications: [],
     saveApplication: async (
       jobTitle,
       companyName,
@@ -60,16 +61,16 @@ export const useApplicationStore = create(
     clearActiveApplication: () => {
       set({ activeApplication: null });
     },
-    getAllApplications: async () => {
+    getAllApplications: async (): Promise<ApplicationArray> => {
       const token = useAuthStore.getState().token;
       const userId = useAuthStore.getState()._id;
       const response = await getApplications(token as string, userId as string);
       if (!response) {
-        return;
+        return [] as ApplicationArray;
       }
       set({ applications: response });
       const applications = get().applications;
-      return applications;
+      return applications as ApplicationArray;
     },
     deleteApplication: async (applicationId: string) => {
       const token = useAuthStore.getState().token;
@@ -81,6 +82,52 @@ export const useApplicationStore = create(
       const token = useAuthStore.getState().token;
       await editApplication(token as string, application);
       get().getAllApplications();
+    },
+    /**
+     * Returns the fetched applications sorted by the given value
+     * @param sortBy string: "company", "position", "appliedOver", "status"
+     * @returns the sorted Array as <ApplicationsArray>
+     */
+    sortApplicationsBy: async (sortBy?: string) => {
+      const applications = await get().getAllApplications();
+      if (applications.length === 0) {
+        return [];
+      }
+      const sortedArray: Application[] = [...applications];
+
+      switch (sortBy) {
+        case "company":
+          sortedArray.sort((a, b) =>
+            a.companyName.localeCompare(b.companyName)
+          );
+          break;
+        case "position":
+          sortedArray.sort((a, b) => a.jobTitle.localeCompare(b.jobTitle));
+          break;
+        case "appliedOver":
+          sortedArray.sort((a, b) => {
+            // Fallback to an empty string if undefined
+            const appliedOverA = a.appliedOver || "";
+            const appliedOverB = b.appliedOver || "";
+            return appliedOverA.localeCompare(appliedOverB);
+          });
+          break;
+        case "status":
+          sortedArray.sort((a, b) => {
+            const statusA = a.status || "";
+            const statusB = b.status || "";
+            return statusA.localeCompare(statusB);
+          });
+          break;
+        case "isFavorite":
+          sortedArray.sort((a, b) => {
+            return a.isFavorite === b.isFavorite ? 0 : a.isFavorite ? -1 : 1;
+          });
+          break;
+        default:
+          return;
+      }
+      set({ applications: sortedArray });
     },
   }))
 );

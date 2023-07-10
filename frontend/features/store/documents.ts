@@ -4,7 +4,11 @@ import { getDocuments } from "../fetching";
 import { useAuthStore } from "./auth";
 import { UserDocument } from "../../../shared/types";
 
-const user = useAuthStore.getState().user;
+/**
+ * Whole file experimental and not a real version considered for building.
+ */
+
+const user = useAuthStore.getState();
 
 interface State {
   documents: UserDocument[] | null;
