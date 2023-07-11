@@ -1,11 +1,18 @@
+import { motion } from "framer-motion";
+
 interface Props {
   onCancel: () => void;
   onDelete: () => void;
 }
 
-const Modal = (props: Props) => {
+const DeleteModal = (props: Props) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 100 }}
+      exit={{ opacity: 0, transition: { duration: 0.2 } }}
+      className="fixed inset-0 flex items-center justify-center z-50"
+    >
       <div className="fixed inset-0 bg-black opacity-50"></div>
       <div className="relative bg-white w-80 p-6 rounded-lg shadow-lg">
         <h2 className="text-lg font-bold mb-4">
@@ -26,8 +33,8 @@ const Modal = (props: Props) => {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
-export default Modal;
+export default DeleteModal;

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Application } from "../../../../shared/types";
 import { useApplicationStore } from "../../../features/store/applications";
 import { format, parseISO } from "date-fns";
-import Modal from "../Modal";
+import DeleteModal from "../DeleteModal";
 
 function ApplicationListItem(props: Application) {
   const [favorite, setFavorite] = useState<boolean>(false);
@@ -118,7 +118,7 @@ function ApplicationListItem(props: Application) {
     >
       {modalOpen &&
         ReactDOM.createPortal(
-          <Modal
+          <DeleteModal
             onDelete={() => deleteApplication(props._id as string)}
             onCancel={() => setModalOpen(false)}
           />,

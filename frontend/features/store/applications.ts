@@ -12,6 +12,7 @@ import { useAuthStore } from "./auth";
 interface State {
   activeApplication: Application | null;
   applications: ApplicationArray;
+  sortByValue: string;
   saveApplication: (
     jobTitle: string,
     companyName: string,
@@ -26,12 +27,14 @@ interface State {
   deleteApplication: (applicationId: string) => void;
   editApplication: (application: Application) => void;
   sortApplicationsBy: (sortBy?: string) => void;
+  setSortByValue: (value: string) => void;
 }
 
 export const useApplicationStore = create(
   devtools<State>((set, get) => ({
     activeApplication: null,
     applications: [],
+    sortByValue: "date",
     saveApplication: async (
       jobTitle,
       companyName,
@@ -53,7 +56,7 @@ export const useApplicationStore = create(
       const token = useAuthStore.getState().token;
       const response = await createApplication(token as string, newApplication);
       set({ activeApplication: response.data });
-      get().getAllApplications();
+      get().sortApplicationsBy();
     },
     setActiveApplication: (targetApplication: Application) => {
       set({ activeApplication: targetApplication });
@@ -76,25 +79,25 @@ export const useApplicationStore = create(
       const token = useAuthStore.getState().token;
       const userId = useAuthStore.getState()._id;
       await deleteApplication(token as string, userId as string, applicationId);
-      get().getAllApplications();
+      get().sortApplicationsBy();
     },
     editApplication: async (application: Application) => {
       const token = useAuthStore.getState().token;
       await editApplication(token as string, application);
-      get().getAllApplications();
+      get().sortApplicationsBy();
     },
     /**
      * Returns the fetched applications sorted by the given value
      * @param sortBy string: "company", "position", "appliedOver", "status"
      * @returns the sorted Array as <ApplicationsArray>
      */
-    sortApplicationsBy: async (sortBy?: string) => {
+    sortApplicationsBy: async () => {
       const applications = await get().getAllApplications();
       if (applications.length === 0) {
         return [];
       }
       const sortedArray: Application[] = [...applications];
-
+      const sortBy = get().sortByValue;
       switch (sortBy) {
         case "company":
           sortedArray.sort((a, b) =>
@@ -103,6 +106,13 @@ export const useApplicationStore = create(
           break;
         case "position":
           sortedArray.sort((a, b) => a.jobTitle.localeCompare(b.jobTitle));
+          break;
+        case "date":
+          sortedArray.sort(
+            (a, b) =>
+              new Date(a.createdAt ?? 0).getTime() -
+              new Date(b.createdAt ?? 0).getTime()
+          );
           break;
         case "appliedOver":
           sortedArray.sort((a, b) => {
@@ -128,6 +138,9 @@ export const useApplicationStore = create(
           return;
       }
       set({ applications: sortedArray });
+    },
+    setSortByValue: (value: string) => {
+      set({ sortByValue: value });
     },
   }))
 );

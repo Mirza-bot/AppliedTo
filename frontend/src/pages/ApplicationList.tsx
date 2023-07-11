@@ -16,15 +16,16 @@ function ApplicationList() {
     (state) => state.sortApplicationsBy,
     shallow
   );
+  const sortByValue = useApplicationStore((state) => state.sortByValue);
 
   useEffect(() => {
     if (!user) {
       navigate("/login");
     } else {
-      getApplications("isFavorite");
+      getApplications();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [sortByValue]);
 
   if (applications?.length === 0) {
     return (
