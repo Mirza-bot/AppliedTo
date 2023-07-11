@@ -15,6 +15,18 @@ function ApplicationListItem(props: Application) {
   //Navigation
   const navigate = useNavigate();
 
+  //Calculate width of component
+  const calcWidth = (): number => {
+    const component = document.getElementById(`${props._id}`);
+    const buttonContainers = component?.querySelectorAll(".button_container");
+    let containersWidth = 0;
+    buttonContainers?.forEach((container) => {
+      const containerElement = container as HTMLElement;
+      containersWidth = containersWidth + containerElement.offsetWidth;
+    });
+    return containersWidth + 26.5;
+  };
+
   const redirect = () => {
     if (tilePosition !== 1) {
       setTilePosition(1);
@@ -95,8 +107,8 @@ function ApplicationListItem(props: Application) {
   };
 
   const displayPosition = () => {
-    if (tilePosition === 0) return "-60vw";
-    else if (tilePosition === 1) return "-30vw";
+    if (tilePosition === 0) return `-${calcWidth()}px`;
+    else if (tilePosition === 1) return `-${calcWidth() / 2}px`;
     else if (tilePosition === 2) return "0";
     else setTilePosition(1);
   };
@@ -107,6 +119,7 @@ function ApplicationListItem(props: Application) {
 
   return (
     <div
+      id={props._id}
       className={` h-24 bg-white flex-row flex transition-all ease-in-out ${
         swipeDirection !== null ? "swipe-active" : ""
       } `}
@@ -114,7 +127,10 @@ function ApplicationListItem(props: Application) {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       onClick={redirect}
-      style={{ width: "160vw", transform: `translateX(${displayPosition()})` }}
+      style={{
+        width: "160vw",
+        transform: `translateX(${displayPosition()})`,
+      }}
     >
       {modalOpen &&
         ReactDOM.createPortal(
@@ -124,7 +140,7 @@ function ApplicationListItem(props: Application) {
           />,
           document.getElementById("root") as Element
         )}
-      <div className="flex flex-row w-4/12 my-4 ml-2 mr-1 gap-3 drop-shadow-slight">
+      <div className="button_container flex flex-row my-4 ml-2 mr-1 gap-3 drop-shadow-slight">
         <button className="bg-grey w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center items-center">
           <span className="drop-shadow-slight">
             <AiOutlineEdit />
@@ -144,10 +160,7 @@ function ApplicationListItem(props: Application) {
         </button>
       </div>
 
-      <div
-        className="flex justify-between transition-all ease-in-out"
-        style={{ width: "200vw" }}
-      >
+      <div className="flex justify-between transition-all ease-in-out w-screen">
         <div className="flex-col flex justify-between py-2 pl-2 overflow-hidden sm:px-5">
           <span className="text-lg font-medium">{props.jobTitle}</span>
           <span className="text-lg font-semibold">{props.companyName}</span>
@@ -163,7 +176,7 @@ function ApplicationListItem(props: Application) {
           <span className="text-sm">{props.status}</span>
         </div>
       </div>
-      <div className="flex flex-row w-4/12 my-4 ml-1 mr-2 gap-3 drop-shadow-slight">
+      <div className="button_container flex flex-row my-4 ml-1 mr-2 gap-3 drop-shadow-slight">
         <button
           onClick={() => {
             setModalOpen(true);
