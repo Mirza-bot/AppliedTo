@@ -11,6 +11,7 @@ import DeleteModal from "../DeleteModal";
 
 function ApplicationListItem(props: Application) {
   const [favorite, setFavorite] = useState<boolean>(false);
+  const [componentWidth, setComponentWidth] = useState<number>(0);
 
   //Navigation
   const navigate = useNavigate();
@@ -41,6 +42,8 @@ function ApplicationListItem(props: Application) {
 
   useEffect(() => {
     setFavorite(props.isFavorite as boolean);
+    setComponentWidth(calcWidth() + window.innerWidth);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.isFavorite]);
 
   // Date Formatting
@@ -106,6 +109,10 @@ function ApplicationListItem(props: Application) {
     }
   };
 
+  const handleTouchEnd = () => {
+    setSwipeDirection(null);
+  };
+
   const displayPosition = () => {
     if (tilePosition === 0) return `-${calcWidth()}px`;
     else if (tilePosition === 1) return `-${calcWidth() / 2}px`;
@@ -113,22 +120,17 @@ function ApplicationListItem(props: Application) {
     else setTilePosition(1);
   };
 
-  const handleTouchEnd = () => {
-    setSwipeDirection(null);
-  };
-
   return (
     <div
       id={props._id}
-      className={` h-24 bg-white flex-row flex transition-all ease-in-out ${
-        swipeDirection !== null ? "swipe-active" : ""
-      } `}
+      className={`application_list_item h-24 bg-white flex-row flex ${"transition-transform ease-in-out"} `}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       onClick={redirect}
       style={{
-        width: "160vw",
+        minWidth: "200vw",
+        width: componentWidth,
         transform: `translateX(${displayPosition()})`,
       }}
     >
@@ -141,7 +143,12 @@ function ApplicationListItem(props: Application) {
           document.getElementById("root") as Element
         )}
       <div className="button_container flex flex-row my-4 ml-2 mr-1 gap-3 drop-shadow-slight">
-        <button className="bg-grey w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center items-center">
+        <button
+          onClick={() => {
+            setActiveApplication(props), navigate("/application/edit");
+          }}
+          className="bg-grey w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center items-center"
+        >
           <span className="drop-shadow-slight">
             <AiOutlineEdit />
           </span>
@@ -151,8 +158,8 @@ function ApplicationListItem(props: Application) {
             editFavorite(!favorite);
           }}
           className={`bg-yellow ${
-            favorite && "bg-opacity-50"
-          } w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center items-center`}
+            favorite && "bg-opacity-70"
+          } w-1/2 overflow-hidden rounded-sm text-4xl text-white  flex justify-center items-center`}
         >
           <span className="drop-shadow-slight">
             <AiOutlineStar />
@@ -166,7 +173,7 @@ function ApplicationListItem(props: Application) {
           <span className="text-lg font-semibold">{props.companyName}</span>
           <span className="text-sm font-light">{props.appliedOver}</span>
         </div>
-        <div className="flex flex-col text-right justify-between py-2 pr-2">
+        <div className="flex flex-col text-right justify-between py-2 px-2">
           <span className="text-sm font-light">
             {formatDate(props.createdAt as string)}
           </span>

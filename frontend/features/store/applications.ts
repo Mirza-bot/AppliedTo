@@ -12,6 +12,7 @@ import { useAuthStore } from "./auth";
 interface State {
   activeApplication: Application | null;
   applications: ApplicationArray;
+  foundBySearch: ApplicationArray;
   sortByValue: string;
   saveApplication: (
     jobTitle: string,
@@ -28,12 +29,15 @@ interface State {
   editApplication: (application: Application) => void;
   sortApplicationsBy: (sortBy?: string) => void;
   setSortByValue: (value: string) => void;
+  searchApplication: (searchFor: string) => void;
+  resetFoundApplications: () => void;
 }
 
 export const useApplicationStore = create(
   devtools<State>((set, get) => ({
     activeApplication: null,
     applications: [],
+    foundBySearch: [],
     sortByValue: "date",
     saveApplication: async (
       jobTitle,
@@ -141,6 +145,33 @@ export const useApplicationStore = create(
     },
     setSortByValue: (value: string) => {
       set({ sortByValue: value });
+    },
+    searchApplication: (searchFor: string) => {
+      const applications = get().applications;
+      const searchValue = searchFor.toLowerCase().trim();
+      const matchingApplications = applications.filter((application) => {
+        return Object.values(application).some((value) => {
+          if (
+            typeof value === "string" &&
+            ![
+              "Applied",
+              "Interviewing",
+              "Ghosted",
+              "Archived",
+              "Rejected",
+              "Accepted",
+            ].includes(value)
+          ) {
+            const lowercasedValue = value.toLowerCase();
+            return lowercasedValue.includes(searchValue);
+          }
+          return false;
+        });
+      });
+      set({ foundBySearch: matchingApplications });
+    },
+    resetFoundApplications: () => {
+      set({ foundBySearch: [] });
     },
   }))
 );

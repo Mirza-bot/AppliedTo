@@ -5,14 +5,20 @@ import { BiSortDown } from "react-icons/bi";
 import IconButton from "./IconButton";
 import { useApplicationStore } from "../../../features/store/applications";
 import SortMenuModal from "../SortMenuModal";
+import SearchModal from "../SearchModal";
 
 function ListMenu() {
   const sortApplicationsBy = useApplicationStore(
     (state) => state.setSortByValue
   );
+  const searchApplication = useApplicationStore(
+    (state) => state.searchApplication
+  );
+
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
+  const [searchMenuOpen, setSearchMenuOpen] = useState(false);
   return (
-    <div className="sticky h-16 w-full z-10 bg-primary bottom-0 border-t-2 border-secondary">
+    <div className=" h-16 w-full  bg-primary bottom-0 border-t-2 border-secondary">
       <div className="flex flex-row text-white text-4xl w-9/12 mx-auto h-full justify-between">
         {sortMenuOpen &&
           ReactDOM.createPortal(
@@ -22,12 +28,22 @@ function ListMenu() {
             />,
             document.getElementById("root") as Element
           )}
+        {searchMenuOpen &&
+          ReactDOM.createPortal(
+            <SearchModal
+              onSearch={(value: string) => searchApplication(value)}
+              onCancel={() => setSearchMenuOpen(false)}
+            />,
+            document.getElementById("root") as Element
+          )}
         <IconButton
           icon={<AiOutlineFileAdd />}
           passedClass="px-5"
           route="/application/new"
         />
-        <IconButton icon={<AiOutlineSearch />} passedClass="px-5" />
+        <div onClick={() => setSearchMenuOpen(true)}>
+          <IconButton icon={<AiOutlineSearch />} passedClass="px-5" />
+        </div>
         <div
           onClick={() => {
             setSortMenuOpen(true);

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuthStore } from "../../features/store/auth";
 import ApplicationListItem from "../components/layout/ApplicationListItem";
 import { useNavigate } from "react-router-dom";
@@ -8,15 +8,89 @@ import { shallow } from "zustand/shallow";
 import { AiOutlineFileAdd } from "react-icons/ai";
 import { motion } from "framer-motion";
 
+interface StatusData {
+  applied: number;
+  interviewing: number;
+  ghosted: number;
+  rejected: number;
+  accepted: number;
+}
+
 function ApplicationList() {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state._id);
-  const applications = useApplicationStore((state) => state.applications);
+  const { applications } = useApplicationStore((state) => state);
   const getApplications = useApplicationStore(
     (state) => state.sortApplicationsBy,
     shallow
   );
-  const sortByValue = useApplicationStore((state) => state.sortByValue);
+  const { sortByValue } = useApplicationStore((state) => state);
+  const [statusData, setStatusData] = useState<StatusData>({
+    applied: 0,
+    interviewing: 0,
+    ghosted: 0,
+    rejected: 0,
+    accepted: 0,
+  });
+  const { foundBySearch } = useApplicationStore((state) => state);
+  const { resetFoundApplications } = useApplicationStore((state) => state);
+
+  const getStatusCount = () => {
+    let applied = 0;
+    let interviewing = 0;
+    let ghosted = 0;
+    let rejected = 0;
+    let accepted = 0;
+    applications.forEach((application) => {
+      switch (application.status) {
+        case "Applied":
+          applied++;
+          break;
+        case "Interviewing":
+          interviewing++;
+          break;
+        case "Ghosted":
+          ghosted++;
+          break;
+        case "Rejected":
+          rejected++;
+          break;
+        case "Accepted":
+          accepted++;
+          break;
+        default:
+          return;
+      }
+    });
+    const collectedData = {
+      applied: applied,
+      interviewing: interviewing,
+      ghosted: ghosted,
+      rejected: rejected,
+      accepted: accepted,
+    };
+    setStatusData(collectedData);
+  };
+
+  const scrollToFoundApplication = () => {
+    const elements = document.getElementsByClassName("application_list_item");
+
+    for (let i = 0; i < elements.length; i++) {
+      const element = elements[i];
+      const id = element.getAttribute("id");
+
+      const matchingObject = foundBySearch.find((obj) => obj._id === id);
+
+      if (matchingObject) {
+        const scrollOffset = -70;
+        const elementPosition = element.getBoundingClientRect().top;
+        const scrollPosition = elementPosition + window.scrollY + scrollOffset;
+        window.scrollTo({ top: scrollPosition, behavior: "smooth" });
+        resetFoundApplications();
+        break;
+      }
+    }
+  };
 
   useEffect(() => {
     if (!user) {
@@ -26,6 +100,17 @@ function ApplicationList() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortByValue]);
+
+  // To set the status bar after the applications array got fetched.
+  useEffect(() => {
+    getStatusCount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [applications]);
+
+  useEffect(() => {
+    scrollToFoundApplication();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [foundBySearch]);
 
   if (applications?.length === 0) {
     return (
@@ -77,7 +162,16 @@ function ApplicationList() {
           );
         })}
       </div>
-      <ListMenu />
+      <div className="sticky z-10 bottom-0">
+        <div className="bg-white flex justify-between p-1 text-xs border-t-2 border-grey">
+          {Object.entries(statusData).map(([status, count]) => (
+            <div key={status} className="">
+              {status.charAt(0).toUpperCase() + status.slice(1)}: {count}
+            </div>
+          ))}
+        </div>
+        <ListMenu />
+      </div>
     </motion.div>
   );
 }

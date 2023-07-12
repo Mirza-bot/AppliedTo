@@ -15,9 +15,9 @@ function ApplicationView() {
   return (
     <div className="p-5 mt-1 w-screen overflow-hidden">
       <div className="flex justify-between">
-        <h1 className="text-2xl  font-medium ">{application?.jobTitle}</h1>
+        <h1 className="text-2xl font-medium pt-5">{application?.jobTitle}</h1>
         <div className="flex flex-col text-right">
-          <span className="text-sm">
+          <span className="text-sm mb-1">
             {formatDate(application?.createdAt as string)}
           </span>
           <div>
@@ -28,7 +28,9 @@ function ApplicationView() {
         </div>
       </div>
       <div className="flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold">{application?.companyName}</h1>
+        <h1 className="text-3xl mt-2 font-semibold">
+          {application?.companyName}
+        </h1>
         <div className="mt-3 bg-white rounded-sm p-2">
           <span className=" font-medium">Description</span>
           <p className="mt-3">{application?.jobDescription}</p>

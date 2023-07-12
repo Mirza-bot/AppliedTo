@@ -1,11 +1,13 @@
 import CustomInput from "../layout/CustomInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 import Switch from "react-switch";
 import { useApplicationStore } from "../../../features/store/applications";
+
 import { useNavigate } from "react-router-dom";
 
-function ApplicationForm() {
+function ApplicationEditForm() {
+  const application = useApplicationStore((state) => state.activeApplication);
   const saveApplication = useApplicationStore().saveApplication;
   const [favorite, setFavorite] = useState<boolean>(false);
   const [jobTitle, setJobTitle] = useState<string>("");
@@ -18,6 +20,17 @@ function ApplicationForm() {
   const [companyError, setCompanyError] = useState<boolean>(false);
   const [titleError, setTitleError] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (application) {
+      setFavorite(application.isFavorite as boolean);
+      setCompanyName(application.companyName);
+      setJobTitle(application.jobTitle);
+      setDescription(application.jobDescription);
+      setAppliedOver(application.appliedOver as string);
+      setStatus(application.status as string);
+    }
+  }, [application]);
 
   const handleSwitch = (checked: boolean) => {
     setFavorite(checked);
@@ -63,13 +76,14 @@ function ApplicationForm() {
       >
         <div className="flex flex-row justify-between w-full">
           <div className="bg-white p-2 rounded-md  ">
-            <label htmlFor="favotite_check" className="flex flex-row">
+            <label htmlFor="favorite_check" className="flex flex-row">
               <span className="text-3xl text-yellow font-medium drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
                 <AiFillStar />
               </span>
               <Switch
                 className="ml-1 mt-0.5 align-top"
-                name="favotite_check"
+                name="favorite_check"
+                id="favorite_check"
                 type="checkbox"
                 onChange={(value) => {
                   handleSwitch(value);
@@ -102,6 +116,7 @@ function ApplicationForm() {
             id="company_name"
             type="text"
             inputClass="p-0.5"
+            value={companyName}
             event={setCompanyName}
             labelClass={companyError ? "text-red" : ""}
           />
@@ -117,6 +132,7 @@ function ApplicationForm() {
             id="position"
             type="text"
             inputClass=" p-0.5"
+            value={jobTitle}
             event={setJobTitle}
             labelClass={titleError ? "text-red" : ""}
           />
@@ -132,6 +148,7 @@ function ApplicationForm() {
           type="textarea"
           textareaClass="border-2 border-grey p-0.5"
           textarea={true}
+          value={description}
           event={setDescription}
         />
         <CustomInput
@@ -139,6 +156,7 @@ function ApplicationForm() {
           id="appliedOver"
           type="textarea"
           textareaClass="border-2 border-grey p-0.5"
+          value={appliedOver}
           event={setAppliedOver}
         />
 
@@ -152,4 +170,4 @@ function ApplicationForm() {
     </div>
   );
 }
-export default ApplicationForm;
+export default ApplicationEditForm;

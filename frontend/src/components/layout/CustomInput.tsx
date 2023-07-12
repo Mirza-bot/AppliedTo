@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   label: string;
@@ -14,7 +14,13 @@ interface Props {
 }
 
 function CustomInput(props: Props) {
-  const [value, setValue] = useState(props.value || "");
+  const [value, setValue] = useState("");
+
+  useEffect(() => {
+    if (props.value) {
+      setValue(props.value);
+    }
+  });
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

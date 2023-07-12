@@ -21,6 +21,7 @@ function AnimatedRoutes() {
         <Route path="/login" Component={AuthPage} />
         <Route path="/applicationList" Component={ApplicationList} />
         <Route path="/application/new" Component={ApplicationEditor} />
+        <Route path="/application/edit" Component={ApplicationEditor} />
         <Route path="/application" Component={ApplicationView} />
         <Route path="/documents" Component={DocumentsView} />
       </Routes>
