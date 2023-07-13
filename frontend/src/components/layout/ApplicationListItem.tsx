@@ -8,6 +8,7 @@ import { Application } from "../../../../shared/types";
 import { useApplicationStore } from "../../../features/store/applications";
 import { format, parseISO } from "date-fns";
 import DeleteModal from "../DeleteModal";
+import ListItemButton from "./ListItemButton";
 
 function ApplicationListItem(props: Application) {
   const [favorite, setFavorite] = useState<boolean>(false);
@@ -78,8 +79,10 @@ function ApplicationListItem(props: Application) {
    */
   const [swipeDirection, setSwipeDirection] = useState<number | null>(null);
   const [tilePosition, setTilePosition] = useState<number>(1);
+  const [swipeActive, setSwipeActive] = useState<boolean>(false);
 
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    setSwipeActive(true);
     const touch = event.touches[0];
     setSwipeDirection(touch.clientX);
   };
@@ -110,6 +113,7 @@ function ApplicationListItem(props: Application) {
   };
 
   const handleTouchEnd = () => {
+    setSwipeActive(false);
     setSwipeDirection(null);
   };
 
@@ -123,7 +127,9 @@ function ApplicationListItem(props: Application) {
   return (
     <div
       id={props._id}
-      className={`application_list_item h-24 bg-white flex-row flex ${"transition-transform ease-in-out"} `}
+      className={`application_list_item h-24 bg-white flex-row flex ${
+        swipeActive && "transition-transform ease-out duration-300"
+      } `}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -142,32 +148,25 @@ function ApplicationListItem(props: Application) {
           />,
           document.getElementById("root") as Element
         )}
-      <div className="button_container flex flex-row my-4 ml-2 mr-1 gap-3 drop-shadow-slight">
-        <button
+      <div className="button_container flex flex-row my-2 ml-2 mr-1 gap-2 drop-shadow-slight">
+        <ListItemButton
           onClick={() => {
             setActiveApplication(props), navigate("/application/edit");
           }}
-          className="bg-grey w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center items-center"
-        >
-          <span className="drop-shadow-slight">
-            <AiOutlineEdit />
-          </span>
-        </button>
-        <button
+          icon={<AiOutlineEdit />}
+          addClass="bg-grey"
+        />
+        <ListItemButton
           onClick={() => {
             editFavorite(!favorite);
           }}
-          className={`bg-yellow ${
-            favorite && "bg-opacity-70"
-          } w-1/2 overflow-hidden rounded-sm text-4xl text-white  flex justify-center items-center`}
-        >
-          <span className="drop-shadow-slight">
-            <AiOutlineStar />
-          </span>
-        </button>
+          addClass="bg-yellow"
+          icon={<AiOutlineStar />}
+          active={favorite}
+        />
       </div>
 
-      <div className="flex justify-between transition-all ease-in-out w-screen">
+      <div className="flex justify-between w-screen">
         <div className="flex-col flex justify-between py-2 pl-2 overflow-hidden sm:px-5">
           <span className="text-lg font-medium">{props.jobTitle}</span>
           <span className="text-lg font-semibold">{props.companyName}</span>
@@ -183,22 +182,17 @@ function ApplicationListItem(props: Application) {
           <span className="text-sm">{props.status}</span>
         </div>
       </div>
-      <div className="button_container flex flex-row my-4 ml-1 mr-2 gap-3 drop-shadow-slight">
-        <button
-          onClick={() => {
-            setModalOpen(true);
-          }}
-          className="bg-red w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center items-center"
-        >
-          <span className="drop-shadow-slight">
-            <BiTrash />
-          </span>
-        </button>
-        <button className="bg-primary  w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center items-center">
-          <span className="drop-shadow-slight">
-            <TiArrowSync />
-          </span>
-        </button>
+      <div className="button_container flex flex-row my-2 ml-2 mr-1 gap-2 drop-shadow-slight">
+        <ListItemButton
+          onClick={() => setModalOpen(true)}
+          icon={<BiTrash />}
+          addClass="bg-red"
+        />
+        <ListItemButton
+          icon={<TiArrowSync />}
+          onClick={() => console.log("test")}
+          addClass="bg-primary"
+        />
       </div>
     </div>
   );
