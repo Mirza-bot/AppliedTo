@@ -20,7 +20,7 @@ function CustomInput(props: Props) {
     if (props.value) {
       setValue(props.value);
     }
-  });
+  }, [props.value]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -45,7 +45,7 @@ function CustomInput(props: Props) {
         <textarea
           onChange={handleChange}
           id={props.id}
-          rows={4}
+          rows={6}
           cols={10}
           value={value}
           className={`bg-white rounded mb-3 border-grey border-4 outline-none focus:border-accent focus:border-4 ${props.textareaClass}`}

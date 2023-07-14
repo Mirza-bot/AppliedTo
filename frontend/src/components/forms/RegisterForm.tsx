@@ -5,7 +5,11 @@ import CustomInput from "../layout/CustomInput";
 import useStatusStore from "../../../features/store/status";
 import LoadingSpinner from "../LoadingSpinner";
 
-function RegisterForm() {
+interface Props {
+  afterSubmit: (value: boolean) => void;
+}
+
+function RegisterForm(props: Props) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -16,6 +20,7 @@ function RegisterForm() {
   //State functions
   const registerUser = useAuthStore((state) => state.register);
   const loading = useStatusStore((state) => state.isLoading);
+  const status = useStatusStore((state) => state);
 
   const handleSubmit = () => {
     setNameError(false);
@@ -29,6 +34,9 @@ function RegisterForm() {
       setNameError(false);
       setPasswordError(false);
       registerUser(email, password, username);
+      props.afterSubmit(false);
+      status.setMessage("Registered");
+      status.setSuccess();
     }
   };
 

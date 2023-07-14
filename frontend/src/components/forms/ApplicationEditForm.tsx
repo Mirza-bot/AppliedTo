@@ -8,13 +8,14 @@ import { useNavigate } from "react-router-dom";
 
 function ApplicationEditForm() {
   const application = useApplicationStore((state) => state.activeApplication);
-  const saveApplication = useApplicationStore().saveApplication;
+  const editApplication = useApplicationStore((state) => state.editApplication);
   const [favorite, setFavorite] = useState<boolean>(false);
   const [jobTitle, setJobTitle] = useState<string>("");
   const [companyName, setCompanyName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  const [jobDescription, setJobDescription] = useState<string>("");
   const [appliedOver, setAppliedOver] = useState<string>("");
   const [status, setStatus] = useState<string>("Applied");
+  const [_id, setId] = useState<string>("");
 
   // Form Control
   const [companyError, setCompanyError] = useState<boolean>(false);
@@ -26,9 +27,10 @@ function ApplicationEditForm() {
       setFavorite(application.isFavorite as boolean);
       setCompanyName(application.companyName);
       setJobTitle(application.jobTitle);
-      setDescription(application.jobDescription);
+      setJobDescription(application.jobDescription);
       setAppliedOver(application.appliedOver as string);
       setStatus(application.status as string);
+      setId(application._id as string);
     }
   }, [application]);
 
@@ -55,14 +57,16 @@ function ApplicationEditForm() {
     }
     setCompanyError(false);
     setTitleError(false);
-    saveApplication(
+    const updatedApplication = {
+      _id,
       jobTitle,
       companyName,
-      description,
+      jobDescription,
       appliedOver,
       favorite,
-      status
-    );
+      status,
+    };
+    editApplication(updatedApplication);
     navigate(-1);
   };
 
@@ -148,8 +152,8 @@ function ApplicationEditForm() {
           type="textarea"
           textareaClass="border-2 border-grey p-0.5"
           textarea={true}
-          value={description}
-          event={setDescription}
+          value={jobDescription}
+          event={setJobDescription}
         />
         <CustomInput
           label="Applied over"

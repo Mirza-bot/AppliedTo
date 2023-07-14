@@ -34,7 +34,7 @@ interface Application extends JobListing {
 
 interface ApplicationArray extends Array<Application> {}
 
-type Notes = [note: string];
+type Notes = [{ note: string; date: string }];
 
 /**
  * for cover letters and cv's

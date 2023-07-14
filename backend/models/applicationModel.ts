@@ -16,7 +16,7 @@ const applicationSchema = new Schema<Application>(
     cvId: { type: String, required: false },
     clId: { type: String, required: false },
     userId: { type: String, required: true },
-    notes: { type: Array, required: false },
+    notes: { type: Schema.Types.Array, required: false },
     isFavorite: { type: Boolean, required: false },
     status: { type: String, required: false },
   },

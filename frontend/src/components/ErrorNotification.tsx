@@ -10,8 +10,9 @@ function ErrorNotification() {
   useEffect(() => {
     if (state.isError) {
       toast.error(state.message, {
-        position: "bottom-right",
-        autoClose: 2500,
+        toastId: "error",
+        position: "bottom-center",
+        autoClose: 1500,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,

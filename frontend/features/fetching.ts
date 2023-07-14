@@ -29,13 +29,11 @@ const register = async (email: string, name: string, password: string) => {
       },
       {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
         },
       }
     );
-    localStorage.setItem("user", JSON.stringify(response.data));
     status.setSuccess();
-    status.setMessage("Registered");
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -62,13 +60,12 @@ const login = async (email: string, password: string) => {
       },
       {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
         },
       }
     );
     localStorage.setItem("user", JSON.stringify(response.data));
     status.setSuccess();
-    status.setMessage("Logged in");
     localStorage.removeItem("inputMail");
     return response.data;
   } catch (error) {
@@ -142,7 +139,7 @@ const createApplication = async (
       newApplication,
       {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       }
@@ -170,7 +167,7 @@ const getApplications = async (token: string, userId: string) => {
   try {
     const response = await axios.get(URL + "applications/read", {
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
       params: {
@@ -202,7 +199,7 @@ const deleteApplication = async (
   try {
     const response = await axios.delete(URL + "applications/delete", {
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
       data: {
@@ -237,7 +234,7 @@ const editApplication = async (token: string, application: Application) => {
       },
       {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       }
@@ -268,7 +265,7 @@ const getDocuments = async (token: string, user: string) => {
   try {
     const response = await axios.get(URL + "documents/read", {
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
         Authorization: `Bearer: ${token}`,
       },
       params: {

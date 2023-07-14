@@ -9,6 +9,7 @@ import { useApplicationStore } from "../../../features/store/applications";
 import { format, parseISO } from "date-fns";
 import DeleteModal from "../DeleteModal";
 import ListItemButton from "./ListItemButton";
+import StatusModal from "../StatusModal";
 
 function ApplicationListItem(props: Application) {
   const [favorite, setFavorite] = useState<boolean>(false);
@@ -32,14 +33,17 @@ function ApplicationListItem(props: Application) {
   const redirect = () => {
     if (tilePosition !== 1) {
       setTilePosition(1);
-    } else if (tilePosition === 1 && modalOpen === false) {
+    } else if (tilePosition === 1 && deleteModalOpen === false) {
       setActiveApplication(props);
       navigate("/application");
     }
   };
 
-  // Modal for "Delete" permission
-  const [modalOpen, setModalOpen] = useState(false);
+  // #####################################
+  // ############ Modals #################
+  // #####################################
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [statusModalOpen, setStatusModalOpen] = useState(false);
 
   useEffect(() => {
     setFavorite(props.isFavorite as boolean);
@@ -69,6 +73,15 @@ function ApplicationListItem(props: Application) {
       isFavorite: isFavorite,
     };
     editApplication(updatedApplication);
+  };
+
+  const editStatus = (status: string) => {
+    const updatedApplication = {
+      ...props,
+      status: status,
+    };
+    editApplication(updatedApplication);
+    setTilePosition(1);
   };
 
   /**
@@ -133,31 +146,33 @@ function ApplicationListItem(props: Application) {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      onClick={redirect}
       style={{
         minWidth: "200vw",
         width: componentWidth,
         transform: `translateX(${displayPosition()})`,
       }}
     >
-      {modalOpen &&
+      {deleteModalOpen &&
         ReactDOM.createPortal(
           <DeleteModal
             onDelete={() => deleteApplication(props._id as string)}
-            onCancel={() => setModalOpen(false)}
+            onCancel={() => {
+              setDeleteModalOpen(false);
+              setTilePosition(1);
+            }}
           />,
           document.getElementById("root") as Element
         )}
       <div className="button_container flex flex-row my-2 ml-2 mr-1 gap-2 drop-shadow-slight">
         <ListItemButton
-          onClick={() => {
+          click={() => {
             setActiveApplication(props), navigate("/application/edit");
           }}
           icon={<AiOutlineEdit />}
           addClass="bg-grey"
         />
         <ListItemButton
-          onClick={() => {
+          click={() => {
             editFavorite(!favorite);
           }}
           addClass="bg-yellow"
@@ -166,7 +181,7 @@ function ApplicationListItem(props: Application) {
         />
       </div>
 
-      <div className="flex justify-between w-screen">
+      <div className="flex justify-between w-screen" onClick={redirect}>
         <div className="flex-col flex justify-between py-2 pl-2 overflow-hidden sm:px-5">
           <span className="text-lg font-medium">{props.jobTitle}</span>
           <span className="text-lg font-semibold">{props.companyName}</span>
@@ -184,13 +199,29 @@ function ApplicationListItem(props: Application) {
       </div>
       <div className="button_container flex flex-row my-2 ml-2 mr-1 gap-2 drop-shadow-slight">
         <ListItemButton
-          onClick={() => setModalOpen(true)}
+          click={() => setDeleteModalOpen(true)}
           icon={<BiTrash />}
           addClass="bg-red"
         />
+        {statusModalOpen &&
+          ReactDOM.createPortal(
+            <StatusModal
+              onCancel={() => {
+                setStatusModalOpen(false);
+                setTilePosition(1);
+              }}
+              editStatus={editStatus}
+              companyName={props.companyName}
+              jobTitle={props.jobTitle}
+              status={props.status}
+              _id={props._id}
+              jobDescription=""
+            />,
+            document.getElementById("root") as Element
+          )}
         <ListItemButton
           icon={<TiArrowSync />}
-          onClick={() => console.log("test")}
+          click={() => setStatusModalOpen(true)}
           addClass="bg-primary"
         />
       </div>

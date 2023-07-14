@@ -10,7 +10,8 @@ function SuccessNotification() {
   useEffect(() => {
     if (state.isSuccess) {
       toast.success(state.message, {
-        position: "top-right",
+        toastId: "success",
+        position: "bottom-center",
         autoClose: 1500,
         hideProgressBar: true,
         closeOnClick: true,
@@ -21,7 +22,8 @@ function SuccessNotification() {
       });
     }
     resetStatus();
-  }, [state.isSuccess, state.message, resetStatus]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.message]);
 
   return <ToastContainer />;
 }

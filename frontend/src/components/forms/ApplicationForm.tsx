@@ -6,7 +6,7 @@ import { useApplicationStore } from "../../../features/store/applications";
 import { useNavigate } from "react-router-dom";
 
 function ApplicationForm() {
-  const saveApplication = useApplicationStore().saveApplication;
+  const saveApplication = useApplicationStore((state) => state.saveApplication);
   const [favorite, setFavorite] = useState<boolean>(false);
   const [jobTitle, setJobTitle] = useState<string>("");
   const [companyName, setCompanyName] = useState<string>("");

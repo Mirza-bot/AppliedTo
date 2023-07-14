@@ -1,5 +1,5 @@
 interface ButtonProps {
-  onClick: () => void;
+  click: () => void;
   icon: React.ReactNode;
   active?: boolean;
   addClass?: string;
@@ -9,7 +9,7 @@ interface ButtonProps {
 function ListItemButton(props: ButtonProps) {
   return (
     <button
-      onTouchStart={props.onClick}
+      onTouchEnd={props.click}
       className={` w-1/2 overflow-hidden rounded-sm text-4xl text-white flex justify-center ${
         props.addClass
       } items-center ${props.active ? "bg-opacity-70" : ""}`}

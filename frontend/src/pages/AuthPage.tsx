@@ -4,13 +4,14 @@ import RegisterForm from "../components/forms/RegisterForm";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import useStatusStore from "../../features/store/status";
-import { useAuthStore } from "../../features/store/auth";
 import LoadingSpinner from "../components/LoadingSpinner";
+import SuccessNotification from "../components/SuccessNotification";
+import ReactDOM from "react-dom";
 
 function AuthPage() {
   const [registerView, setRegisterView] = useState(false);
 
-  const authorized = useAuthStore((state) => state._id);
+  const authorized = localStorage.getItem("user");
   const loading = useStatusStore((state) => state.isLoading);
 
   const navigate = useNavigate();
@@ -36,8 +37,16 @@ function AuthPage() {
       exit={{ x: 100, transition: { duration: 0.2 } }}
       className="select-none"
     >
+      {ReactDOM.createPortal(
+        <SuccessNotification />,
+        document.getElementById("root") as Element
+      )}
       <div className="p-4">
-        {!registerView ? <LoginForm /> : <RegisterForm />}
+        {!registerView ? (
+          <LoginForm />
+        ) : (
+          <RegisterForm afterSubmit={() => setRegisterView(false)} />
+        )}
       </div>
       <motion.div
         initial={{ opacity: 0 }}

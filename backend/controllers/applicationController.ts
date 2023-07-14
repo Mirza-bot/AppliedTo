@@ -75,9 +75,9 @@ const editApplication = expressAsyncHandler(
   async (req: Request, res: Response) => {
     try {
       const request = req.body;
-      const userData = req.body.user;
-      const user = await userModel.findById(userData._id);
+      const user = await userModel.findById(request.user._id);
       const application = await applicationModel.findById(request._id);
+      console.log(application);
 
       if (!application) {
         res.status(400);
@@ -105,6 +105,7 @@ const editApplication = expressAsyncHandler(
             clId: request.clId,
             notes: request.notes,
             isFavorite: request.isFavorite,
+            status: request.status,
           }
         );
         res.status(200).send("Successfully updated!");

@@ -90,6 +90,7 @@ export const useApplicationStore = create(
       await editApplication(token as string, application);
       get().sortApplicationsBy();
     },
+
     /**
      * Returns the fetched applications sorted by the given value
      * @param sortBy string: "company", "position", "appliedOver", "status"

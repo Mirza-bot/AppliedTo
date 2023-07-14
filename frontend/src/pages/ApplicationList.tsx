@@ -158,6 +158,7 @@ function ApplicationList() {
               status={application.status}
               appliedOver={application.appliedOver}
               isFavorite={application.isFavorite}
+              notes={application.notes}
             />
           );
         })}

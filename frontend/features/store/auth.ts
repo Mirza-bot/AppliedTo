@@ -30,14 +30,14 @@ export const useAuthStore = create(
     token: storageData ? storageData.token : null,
     //#########################################################################################################
     register: async (email: string, password: string, name: string) => {
-      const response = await register(email, password, name);
+      const response = await register(email, name, password);
       const userData = response as UserData;
       set({
         _id: userData._id,
         email: userData.email,
         name: userData.name,
         settings: userData.settings,
-        token: response.data.token,
+        token: userData.token,
       });
     },
     //#########################################################################################################
