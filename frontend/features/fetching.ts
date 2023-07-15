@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import useStatusStore from "./store/status";
-import { Application } from "../../shared/types";
+import { Application, Settings } from "../../shared/types";
 
 //#######################################################################################
 // Before building for production this must be changed back to http://localhost:8210/api/
@@ -82,47 +82,37 @@ const login = async (email: string, password: string) => {
   }
 };
 
-// OF NO USE FOR NOW!
-// const updateUser = async (
-//   token: string,
-//   name: string,
-//   applications: string[],
-//   settings: string[],
-//   documents: string[]
-// ) => {
-//   status.setLoading();
-//   console.log(applications);
-//   try {
-//     const response = await axios.put(
-//       URL + "user/update",
-//       {
-//         name: name,
-//         applications: applications,
-//         settings: settings,
-//         documents: documents,
-//       },
-//       {
-//         headers: {
-//           "Content-Type": "application/x-www-form-urlencoded",
-//           Authorization: `Bearer ${token}`,
-//         },
-//       }
-//     );
-//     status.setSuccess();
-//     return response.data;
-//   } catch (error) {
-//     if (axios.isAxiosError(error)) {
-//       const axiosError = error as AxiosError;
-//       const statusCode = axiosError.response?.status;
-//       const errorMessage = axiosError.response?.data as ErrorMessage;
+const updateUser = async (token: string, name: string, settings: Settings) => {
+  status.setLoading();
+  try {
+    const response = await axios.put(
+      URL + "user/update",
+      {
+        name: name,
+        settings: settings,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    status.setSuccess();
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const statusCode = axiosError.response?.status;
+      const errorMessage = axiosError.response?.data as ErrorMessage;
 
-//       status.setError();
-//       status.setErrorCode(statusCode as number);
-//       status.setMessage(errorMessage?.message);
-//     }
-//     throw error;
-//   }
-// };
+      status.setError();
+      status.setErrorCode(statusCode as number);
+      status.setMessage(errorMessage?.message);
+    }
+    throw error;
+  }
+};
 
 //#############################################################
 // CRUD functions for Applications
@@ -296,4 +286,5 @@ export {
   deleteApplication,
   getDocuments,
   editApplication,
+  updateUser,
 };

@@ -36,7 +36,7 @@ function CustomInput(props: Props) {
       <div className="flex justify-between">
         <label
           htmlFor={props.id}
-          className={`text-left ml-0.5 font-semibold ${props.labelClass}`}
+          className={`text-left dark:text-grey ml-0.5 font-semibold ${props.labelClass}`}
         >
           {props.label}
         </label>
@@ -48,14 +48,14 @@ function CustomInput(props: Props) {
           rows={6}
           cols={10}
           value={value}
-          className={`bg-white rounded mb-3 border-grey border-4 outline-none focus:border-accent focus:border-4 ${props.textareaClass}`}
+          className={`bg-white dark:bg-darkSecondary dark:border-darkAccent dark:focus:border-accent dark:focus:border-4  rounded mb-3 border-grey border-4 outline-none focus:border-accent focus:border-4 ${props.textareaClass}`}
         />
       ) : (
         <input
           onChange={handleChange}
           id={props.id}
           type={props.type}
-          className={`bg-white rounded text-xl mb-3 border-grey border-4 outline-none focus:border-accent focus:border-4 ${props.inputClass}`}
+          className={`bg-white dark:bg-darkSecondary dark:border-darkAccent dark:focus:border-accent dark:focus:border-4  rounded text-xl mb-3 border-grey border-4 outline-none focus:border-accent focus:border-4 ${props.inputClass}`}
           placeholder={props.placeholder}
           value={value}
         />

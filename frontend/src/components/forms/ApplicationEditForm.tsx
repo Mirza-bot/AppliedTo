@@ -71,7 +71,7 @@ function ApplicationEditForm() {
   };
 
   return (
-    <div className="pt-3">
+    <div className="pt-3 dark:text-lightgrey">
       <form
         className=" mx-auto flex flex-col gap-3"
         onSubmit={(event) => {
@@ -79,7 +79,7 @@ function ApplicationEditForm() {
         }}
       >
         <div className="flex flex-row justify-between w-full">
-          <div className="bg-white p-2 rounded-md  ">
+          <div className="bg-white dark:bg-darkSecondary p-2 rounded-md  ">
             <label htmlFor="favorite_check" className="flex flex-row">
               <span className="text-3xl text-yellow font-medium drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
                 <AiFillStar />
@@ -96,12 +96,12 @@ function ApplicationEditForm() {
               />
             </label>
           </div>
-          <div className="bg-white p-2 rounded-md">
+          <div className="bg-white dark:bg-darkSecondary p-2 rounded-md">
             <label htmlFor="status">Status:</label>
             <select
               onChange={handleStatusChange}
               value={status}
-              className="ml-3"
+              className="ml-3 dark:bg-darkPrimary"
               name="status"
               id="status"
             >
@@ -166,7 +166,7 @@ function ApplicationEditForm() {
 
         <button
           type="submit"
-          className="bg-secondary text-black text-xl font-medium w-9/12 h-12 rounded-md mx-auto my-10 block  active:bg-accent active:text-secondary transition-colors  select-none"
+          className="bg-secondary dark:text-primary dark:bg-darkSecondary dark:active:bg-darkAccent dark:active:text-darkSecondary text-black text-xl font-medium w-9/12 h-12 rounded-md mx-auto my-10 block  active:bg-accent active:text-secondary transition-colors  select-none"
         >
           Save
         </button>

@@ -22,14 +22,18 @@ const SortMenuModal = (props: Props) => {
       className="fixed inset-0 flex items-center justify-center z-50"
     >
       <div className="fixed inset-0 bg-black opacity-50"></div>
-      <div className="relative bg-white w-80 p-6 rounded-lg shadow-lg">
-        <h2 className="text-lg font-bold mb-4">Sort list by:</h2>
+      <div className="relative bg-white dark:bg-darkSecondary w-80 p-6 rounded-lg shadow-lg">
+        <h2 className="text-lg font-bold mb-4 dark:text-lightgrey">
+          Sort list by:
+        </h2>
         <div className="outline-2 outline outline-grey rounded mb-5">
           <div className="flex flex-col gap-0.5 bg-grey text-center">
             <button
               onClick={() => sortAndClose("date")}
               className={`w-full p-3 text-xl ${
-                sortByValue === "date" ? "bg-primary text-white" : "bg-white"
+                sortByValue === "date"
+                  ? "bg-primary text-white "
+                  : "bg-white dark:bg-darkPrimary dark:text-lightgrey"
               }`}
             >
               Date
@@ -37,7 +41,9 @@ const SortMenuModal = (props: Props) => {
             <button
               onClick={() => sortAndClose("company")}
               className={`w-full p-3 text-xl ${
-                sortByValue === "company" ? "bg-primary text-white" : "bg-white"
+                sortByValue === "company"
+                  ? "bg-primary text-white"
+                  : "bg-white dark:bg-darkPrimary dark:text-lightgrey"
               }`}
             >
               Company
@@ -47,7 +53,7 @@ const SortMenuModal = (props: Props) => {
               className={`w-full p-3 text-xl ${
                 sortByValue === "position"
                   ? "bg-primary text-white"
-                  : "bg-white"
+                  : "bg-white dark:bg-darkPrimary dark:text-lightgrey"
               }`}
             >
               Position
@@ -57,7 +63,7 @@ const SortMenuModal = (props: Props) => {
               className={`w-full p-3 text-xl ${
                 sortByValue === "appliedOver"
                   ? "bg-primary text-white"
-                  : "bg-white"
+                  : "bg-white dark:bg-darkPrimary dark:text-lightgrey"
               }`}
             >
               Applied Over
@@ -65,7 +71,9 @@ const SortMenuModal = (props: Props) => {
             <button
               onClick={() => sortAndClose("status")}
               className={`w-full p-3 text-xl ${
-                sortByValue === "status" ? "bg-primary text-white" : "bg-white"
+                sortByValue === "status"
+                  ? "bg-primary text-white"
+                  : "bg-white dark:bg-darkPrimary dark:text-lightgrey"
               }`}
             >
               Status
@@ -75,7 +83,7 @@ const SortMenuModal = (props: Props) => {
               className={`w-full p-3 text-xl ${
                 sortByValue === "isFavorite"
                   ? "bg-primary text-white"
-                  : "bg-white"
+                  : "bg-white dark:bg-darkPrimary dark:text-lightgrey"
               }`}
             >
               Favorite

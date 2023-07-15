@@ -119,7 +119,7 @@ function ApplicationList() {
         animate={{ opacity: 100 }}
         exit={{ opacity: 0, transition: { duration: 0.2 } }}
       >
-        <div className="text-darkgrey">
+        <div className="text-darkgrey dark:text-lightgrey">
           <div className="h-screen p-5">
             <h1 className="text-2xl font-semibold  ">No Applications yet?</h1>
             <div className="font-semibold">
@@ -164,7 +164,7 @@ function ApplicationList() {
         })}
       </div>
       <div className="sticky z-10 bottom-0">
-        <div className="bg-white flex justify-between p-1 text-xs border-t-2 border-grey">
+        <div className="bg-white dark:bg-darkSecondary dark:border-secondary dark:text-lightgrey flex justify-between p-1 text-xs border-t-2 border-grey">
           {Object.entries(statusData).map(([status, count]) => (
             <div key={status} className="">
               {status.charAt(0).toUpperCase() + status.slice(1)}: {count}

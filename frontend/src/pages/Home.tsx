@@ -23,6 +23,7 @@ function Login() {
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: -100, opacity: 0, transition: { duration: 0.2 } }}
+      className="dark:text-lightgrey "
     >
       <div className="px-4 mt-10">
         <div className=" mb-8 pb-3">
@@ -39,7 +40,7 @@ function Login() {
             your devices.
           </p>
         </div>
-        <div className="flex justify-center my-14">
+        <div className="flex justify-center my-14 dark:bg-primary p-3 rounded">
           <img src={workflowGraphic} alt="workflow graphic" />
         </div>
       </div>
@@ -47,11 +48,11 @@ function Login() {
         onClick={() => {
           redirect("/login");
         }}
-        className="bg-primary text-white text-xl font-medium w-9/12 h-14 rounded-md mx-auto my-20 block  active:bg-accent active:text-secondary transition-colors  select-none"
+        className="bg-primary dark:text-primary dark:bg-darkPrimary dark:active:bg-darkAccent dark:active:text-darkSecondary text-white text-xl font-medium w-9/12 h-14 rounded-md mx-auto my-20 block  active:bg-accent active:text-secondary transition-colors  select-none"
       >
         Get Started
       </button>
-      <div className="text-sm text-center font-light text-blue w-full mb-3">
+      <div className="text-sm text-center font-light text-blue dark:text-secondary w-full mb-3">
         <button>Development & Design by Malkoc Mirza</button>
       </div>
     </motion.div>

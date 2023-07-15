@@ -22,7 +22,7 @@ function SearchModal(props: Props) {
       className="fixed inset-0 flex items-center justify-center z-50"
     >
       <div className="fixed inset-0 bg-black opacity-50"></div>
-      <div className="relative bg-white w-80 p-6 rounded-lg shadow-lg">
+      <div className="relative bg-white dark:bg-darkPrimary dark:text-lightgrey w-80 p-6 rounded-lg shadow-lg">
         <h2 className="text-lg font-bold mb-2">Search for:</h2>
         <CustomInput
           event={setSearchValue}
@@ -32,7 +32,7 @@ function SearchModal(props: Props) {
         />
         <div className="flex justify-evenly mt-1">
           <button
-            className="px-4 py-2 text-lightgrey bg-primary rounded-lg"
+            className="px-4 py-2 text-lightgrey dark:text-black bg-primary rounded-lg"
             onClick={searchAndClose}
           >
             Search

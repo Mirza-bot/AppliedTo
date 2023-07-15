@@ -15,6 +15,7 @@ function LoginForm() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
+      className="dark:text-lightgrey"
     >
       <div>
         <header className="text-3xl font-semibold mb-6">Login</header>
@@ -24,7 +25,7 @@ function LoginForm() {
             loginUser(email, password);
             localStorage.setItem("inputMail", email);
           }}
-          className="bg-secondary p-5 rounded border-2 border-primary flex flex-col text-center"
+          className="bg-secondary dark:bg-darkPrimary  p-5 rounded border-2 border-primary dark:border-darkSecondary flex flex-col text-center"
         >
           <CustomInput
             label="E-Mail"
@@ -43,7 +44,7 @@ function LoginForm() {
           />
           <button
             type="submit"
-            className="bg-primary text-white text-xl font-medium w-9/12 h-12 rounded-md mx-auto mt-2 block  active:bg-accent active:text-secondary transition-colors  select-none"
+            className="bg-primary dark:text-primary dark:bg-darkSecondary dark:active:bg-darkAccent dark:active:text-darkSecondary text-white text-xl font-medium w-9/12 h-12 rounded-md mx-auto mt-2 block  active:bg-accent active:text-secondary transition-colors  select-none"
           >
             Login
           </button>

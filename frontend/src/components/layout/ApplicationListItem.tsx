@@ -140,7 +140,7 @@ function ApplicationListItem(props: Application) {
   return (
     <div
       id={props._id}
-      className={`application_list_item h-24 bg-white flex-row flex ${
+      className={`application_list_item h-24 bg-white dark:bg-darkSecondary flex-row flex ${
         swipeActive && "transition-transform ease-out duration-300"
       } `}
       onTouchStart={handleTouchStart}
@@ -181,11 +181,16 @@ function ApplicationListItem(props: Application) {
         />
       </div>
 
-      <div className="flex justify-between w-screen" onClick={redirect}>
+      <div
+        className="flex justify-between w-screen dark:text-lightgrey"
+        onClick={redirect}
+      >
         <div className="flex-col flex justify-between py-2 pl-2 overflow-hidden sm:px-5">
           <span className="text-lg font-medium">{props.jobTitle}</span>
           <span className="text-lg font-semibold">{props.companyName}</span>
-          <span className="text-sm font-light">{props.appliedOver}</span>
+          <span className="text-sm font-light overflow-hidden">
+            {props.appliedOver}
+          </span>
         </div>
         <div className="flex flex-col text-right justify-between py-2 px-2">
           <span className="text-sm font-light">

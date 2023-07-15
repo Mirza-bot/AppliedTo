@@ -52,7 +52,7 @@ function AuthPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0, transition: { duration: 0.2 } }}
-        className="text-sm text-center font-light text-blue w-full mb-3"
+        className="text-sm text-center font-light text-blue dark:text-secondary w-full mb-3"
       >
         <button
           onClick={() => {

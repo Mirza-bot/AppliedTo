@@ -6,8 +6,13 @@ interface User {
   token?: string;
   documents?: string[];
   applications?: string[];
-  settings?: string[];
+  settings?: Settings;
   avatar?: File;
+}
+
+interface Settings {
+  darkMode: boolean;
+  language: string;
 }
 
 interface UserData extends User {
@@ -53,4 +58,5 @@ export type {
   Application,
   ApplicationArray,
   Notes,
+  Settings,
 };

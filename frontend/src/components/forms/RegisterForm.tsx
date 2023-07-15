@@ -49,6 +49,7 @@ function RegisterForm(props: Props) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.4 } }}
+      className="dark:text-lightgrey"
     >
       <div>
         <header className="text-3xl font-semibold mb-6">Register</header>
@@ -57,7 +58,7 @@ function RegisterForm(props: Props) {
             e.preventDefault();
             handleSubmit();
           }}
-          className="bg-primary p-5 rounded border-2 border-secondary flex flex-col text-center"
+          className="bg-primary dark:bg-darkSecondary p-5 rounded border-2 border-secondary dark:border-darkAccent flex flex-col text-center"
         >
           <CustomInput
             label="E-Mail"
@@ -104,7 +105,7 @@ function RegisterForm(props: Props) {
           )}
           <button
             type="submit"
-            className="bg-secondary text-black text-xl font-medium w-9/12 h-12 rounded-md mx-auto mt-2 block  active:bg-accent active:text-secondary transition-colors  select-none"
+            className="bg-secondary dark:bg-darkPrimary dark:text-secondary text-black text-xl font-medium w-9/12 h-12 rounded-md mx-auto mt-2 block  active:bg-accent active:text-secondary transition-colors  select-none"
           >
             Register
           </button>

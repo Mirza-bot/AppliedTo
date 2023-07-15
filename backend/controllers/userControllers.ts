@@ -36,7 +36,7 @@ const registerUser = expressAsyncHandler(
       password: hashedPassword,
       documents: [],
       applications: [],
-      settings: {},
+      settings: [],
       avatar: [],
     });
     if (user) {
@@ -114,12 +114,9 @@ const editUserData = expressAsyncHandler(
   async (req: Request, res: Response) => {
     try {
       const user = req.body.user;
-      console.log(user);
       await userModel.findByIdAndUpdate(user._id.toString(), {
-        name: user.name,
-        applications: user.applications,
-        settings: user.settings,
-        documents: user.documents,
+        name: req.body.name,
+        settings: req.body.settings,
       });
       res.status(200).json(req.body);
     } catch (error) {
