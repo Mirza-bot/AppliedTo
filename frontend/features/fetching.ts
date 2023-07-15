@@ -82,12 +82,22 @@ const login = async (email: string, password: string) => {
   }
 };
 
-const updateUser = async (token: string, name: string, settings: Settings) => {
+const updateUser = async (
+  token: string,
+  email: string,
+  name: string,
+  settings: Settings
+) => {
   status.setLoading();
+  console.log("Email: " + email);
+  console.log("Name: " + name);
+  console.log("Setting: " + settings);
+
   try {
     const response = await axios.put(
       URL + "user/update",
       {
+        email: email,
         name: name,
         settings: settings,
       },
@@ -99,6 +109,7 @@ const updateUser = async (token: string, name: string, settings: Settings) => {
       }
     );
     status.setSuccess();
+    localStorage.setItem("user", JSON.stringify(response.data));
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

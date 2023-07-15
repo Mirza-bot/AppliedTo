@@ -7,8 +7,9 @@ interface SettingsState {
   setSettings: (settings: Settings) => void;
   //Dark Mode
   darkMode: boolean;
-  language: string;
   setDarkMode: (value: boolean) => void;
+  language: string;
+  setLanguage: (value: string) => void;
   saveSettings: () => void;
 }
 
@@ -22,12 +23,15 @@ export const useSettingsStore = create(
       set({ darkMode: settings.darkMode, language: settings.language });
     },
     //Dark Mode
-    darkMode: storageData ? (storageData.settings?.darkMode as boolean) : false,
+    darkMode: storageData ? (storageData.settings?.darkMode as boolean) : true,
     setDarkMode: (value) => {
       set({ darkMode: value });
     },
     //Language
-    language: "english",
+    language: "English",
+    setLanguage: (value) => {
+      set({ language: value });
+    },
     //Save settings
     saveSettings: async () => {
       const currentSettings = {

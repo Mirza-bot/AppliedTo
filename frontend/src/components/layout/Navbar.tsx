@@ -23,7 +23,9 @@ function Navbar() {
     } else if (
       currentRoute === "/application/new" ||
       currentRoute === "/application/edit" ||
-      currentRoute === "/application"
+      currentRoute === "/application" ||
+      currentRoute === "/settings/archive" ||
+      currentRoute === "/settings/userData"
     ) {
       setNavButtons("application");
     } else {

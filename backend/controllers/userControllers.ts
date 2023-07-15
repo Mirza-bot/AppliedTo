@@ -113,13 +113,25 @@ const getUserData = (req: Request, res: Response) => {
 const editUserData = expressAsyncHandler(
   async (req: Request, res: Response) => {
     try {
-      const user = req.body.user;
+      const user = (await userModel.findOne(req.body.user._id)) as UserData;
+      if (!user) {
+        res.status(401);
+        throw new Error("Internal error invalid token.");
+      }
       await userModel.findByIdAndUpdate(user._id.toString(), {
+        email: req.body.email,
         name: req.body.name,
         settings: req.body.settings,
       });
-      res.status(200).json(req.body);
+      res.status(201).json({
+        _id: user._id,
+        name: req.body.name,
+        email: req.body.email,
+        token: generateToken(user._id),
+        settings: req.body.settings,
+      });
     } catch (error) {
+      console.log(error);
       res.status(400);
       throw new Error("Invalid data.");
     }

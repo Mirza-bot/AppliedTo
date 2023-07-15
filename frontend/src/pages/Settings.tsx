@@ -2,10 +2,10 @@ import { useAuthStore } from "../../features/store/auth";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import SettingsTile from "../components/layout/SettingsTile";
-import DropdownMenu from "../components/layout/DropdownMenu";
+// import DropdownMenu from "../components/layout/DropdownMenu";
+// import { BsGlobeAmericas } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
 import { AiOutlineUser } from "react-icons/ai";
-import { BsGlobeAmericas } from "react-icons/bs";
 import { BiExit, BiArchiveIn } from "react-icons/bi";
 import { MdDarkMode } from "react-icons/md";
 import Switch from "react-switch";
@@ -25,6 +25,16 @@ function Settings() {
   // SETTINGS STORE
   const settings = useSettingsStore((state) => state);
 
+  //   const switchLanguage = (language: string) => {
+  //     settings.setLanguage(language);
+  //     settings.saveSettings();
+  //   };
+
+  const switchDarkMode = (value: boolean) => {
+    settings.setDarkMode(value);
+    settings.saveSettings();
+  };
+
   return (
     <div>
       <div className="bg-secondary dark:bg-darkSecondary dark:text-secondary p-1 flex gap-3">
@@ -40,20 +50,29 @@ function Settings() {
         PROFILE
       </div>
       <div className="flex gap-1 flex-col">
-        <SettingsTile icon={<AiOutlineUser />} name={"User data"} />
-        <SettingsTile icon={<BiArchiveIn />} name={"Archive"} />
+        <SettingsTile
+          icon={<AiOutlineUser />}
+          name={"Edit user data"}
+          route={"userData"}
+        />
+        <SettingsTile
+          icon={<BiArchiveIn />}
+          name={"Archive"}
+          route={"archive"}
+        />
       </div>
       <div className="bg-grey text-darkgrey dark:bg-darkPrimary dark:text-grey font-semibold text-sm pl-3 ">
         PREFERENCES
       </div>
       <div className="flex flex-col gap-1">
-        <div className="flex flex-col">
+        {/* <div className="flex flex-col">
           <DropdownMenu
             icon={<BsGlobeAmericas />}
             name={"Language"}
             options={["English", "German"]}
+            event={switchLanguage}
           />
-        </div>
+        </div> */}
         <div>
           <div className="px-6 py-5 bg-white dark:bg-darkSecondary dark:text-lightgrey flex font-bold items-center justify-between">
             <div className="flex w-full">
@@ -67,8 +86,7 @@ function Settings() {
               name="darkMode"
               type="checkbox"
               onChange={(value) => {
-                settings.setDarkMode(value);
-                settings.saveSettings();
+                switchDarkMode(value);
               }}
               checked={settings.darkMode}
             />

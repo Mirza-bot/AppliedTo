@@ -13,6 +13,8 @@ import ApplicationEditor from "./pages/ApplicationEditor";
 import ApplicationView from "./pages/ApplicationView";
 import Settings from "./pages/Settings";
 import useSettingsStore from "../features/store/settings";
+import Archive from "./pages/Archive";
+import UserDataPage from "./pages/UserDataPage";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -47,6 +49,8 @@ function AnimatedRoutes() {
         <Route path="/application" Component={ApplicationView} />
         <Route path="/settings" Component={Settings} />
         <Route path="/documents" Component={DocumentsView} />
+        <Route path="/settings/archive" Component={Archive} />
+        <Route path="/settings/userData" Component={UserDataPage} />
       </Routes>
     </AnimatePresence>
   );

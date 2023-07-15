@@ -147,20 +147,22 @@ function ApplicationList() {
     >
       <div className="flex flex-col gap-1 overflow-hidden min-h-screen">
         {applications?.map((application) => {
-          return (
-            <ApplicationListItem
-              key={application._id}
-              _id={application._id}
-              companyName={application.companyName}
-              jobTitle={application.jobTitle}
-              jobDescription={application.jobDescription}
-              createdAt={application.createdAt}
-              status={application.status}
-              appliedOver={application.appliedOver}
-              isFavorite={application.isFavorite}
-              notes={application.notes}
-            />
-          );
+          if (application.status !== "Archived") {
+            return (
+              <ApplicationListItem
+                key={application._id}
+                _id={application._id}
+                companyName={application.companyName}
+                jobTitle={application.jobTitle}
+                jobDescription={application.jobDescription}
+                createdAt={application.createdAt}
+                status={application.status}
+                appliedOver={application.appliedOver}
+                isFavorite={application.isFavorite}
+                notes={application.notes}
+              />
+            );
+          }
         })}
       </div>
       <div className="sticky z-10 bottom-0">

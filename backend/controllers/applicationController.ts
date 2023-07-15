@@ -77,7 +77,6 @@ const editApplication = expressAsyncHandler(
       const request = req.body;
       const user = await userModel.findById(request.user._id);
       const application = await applicationModel.findById(request._id);
-      console.log(application);
 
       if (!application) {
         res.status(400);

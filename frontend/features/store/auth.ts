@@ -15,6 +15,7 @@ interface State {
   logout: () => void;
   update: () => void;
   setSettings: (settings: Settings) => void;
+  setUserData: (email: string, name: string) => void;
 }
 
 // Get user from local storage
@@ -71,14 +72,21 @@ export const useAuthStore = create(
     //##########################################################################################################
     update: async () => {
       const user = get();
-      const response = await updateUser(
+      console.log(user);
+      await updateUser(
         user?.token ?? "",
+        user?.email ?? "",
         user?.name ?? "",
         user?.settings ?? ({} as Settings)
       );
     },
     setSettings: (settings) => {
       set({ settings: settings });
+      get().update();
+    },
+    setUserData: (email, name) => {
+      console.log(email);
+      set({ email: email, name: name });
       get().update();
     },
   }))
