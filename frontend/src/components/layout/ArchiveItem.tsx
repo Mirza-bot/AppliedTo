@@ -1,7 +1,6 @@
 import { Application } from "../../../../shared/types";
 import { AiFillStar, AiOutlineRollback } from "react-icons/ai";
 import { format, parseISO } from "date-fns";
-import ListItemButton from "./ListItemButton";
 import { useApplicationStore } from "../../../features/store/applications";
 import { useNavigate } from "react-router-dom";
 
@@ -39,7 +38,7 @@ function ArchiveItem(props: Application) {
           {props.appliedOver}
         </span>
       </div>
-      <div className="flex flex-row">
+      <div className="flex flex-row mt-1">
         <div className="flex flex-col text-right justify-between py-2 px-2">
           <span className="text-sm font-light">
             {formatDate(props.createdAt as string)}
@@ -49,11 +48,12 @@ function ArchiveItem(props: Application) {
           </span>
           <span className="text-sm">{props.status}</span>
         </div>
-        <ListItemButton
-          icon={<AiOutlineRollback />}
-          click={() => editStatus("Applied")}
-          addClass="dark:bg-darkPrimary bg-secondary lg:block p-3 w-12"
-        />
+        <button
+          className="text-3xl bg-secondary dark:bg-darkAccent"
+          onClick={() => editStatus("Applied")}
+        >
+          <AiOutlineRollback />
+        </button>
       </div>
     </div>
   );

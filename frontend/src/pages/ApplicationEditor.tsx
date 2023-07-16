@@ -19,7 +19,7 @@ function ApplicationEditor() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 100 }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      className="select-none dark:text-lightgrey"
+      className="select-none dark:text-lightgrey lg:max-w-xl lg:mx-auto"
     >
       <h1 className="text-2xl mt-10 ml-5 font-medium ">
         {editMode ? "Edit application" : "Create a new application"}

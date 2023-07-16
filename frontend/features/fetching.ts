@@ -5,7 +5,7 @@ import { Application, Settings } from "../../shared/types";
 //#######################################################################################
 // Before building for production this must be changed back to http://localhost:8210/api/
 //#######################################################################################
-const URL = "http://192.168.0.60:8210/api/";
+const URL = "http://localhost:8210/api/";
 
 //Error handling in frontend
 const status = useStatusStore.getState();

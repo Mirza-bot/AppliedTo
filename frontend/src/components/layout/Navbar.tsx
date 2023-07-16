@@ -131,7 +131,7 @@ function Navbar() {
                 Search
               </button>
               <button
-                className={`hidden gap-1 dark:text-lightgrey p-1 ${
+                className={` gap-1 dark:text-lightgrey p-1 ${
                   currentRoute === "/applicationList" ? "flex" : "hidden"
                 }`}
                 onClick={() => setSortMenuOpen(true)}

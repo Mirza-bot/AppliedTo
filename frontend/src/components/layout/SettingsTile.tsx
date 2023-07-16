@@ -12,7 +12,7 @@ function SettingsTile(props: Props) {
 
   return (
     <div
-      className="px-6 py-5 bg-white dark:bg-darkSecondary dark:text-lightgrey  flex font-bold items-center justify-between"
+      className="px-6 py-5 bg-white dark:bg-darkSecondary dark:text-lightgrey  flex font-bold items-center justify-between cursor-pointer"
       onClick={() => props.route && navigate(props.route)}
     >
       <div className="flex w-full">

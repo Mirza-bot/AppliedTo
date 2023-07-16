@@ -103,10 +103,12 @@ function ApplicationList() {
       const matchingObject = foundBySearch.find((obj) => obj._id === id);
 
       if (matchingObject) {
+        element.classList.add("highlight");
         element.classList.add("animate-pulse");
         console.log(element);
 
         setTimeout(() => {
+          element.classList.remove("highlight");
           element.classList.remove("animate-pulse");
         }, 6000);
         const scrollOffset = -70;

@@ -8,7 +8,6 @@ import { useEffect } from "react";
 import Home from "./pages/Home";
 import AuthPage from "./pages/AuthPage";
 import ApplicationList from "./pages/ApplicationList";
-import DocumentsView from "./pages/DocumentView";
 import ApplicationEditor from "./pages/ApplicationEditor";
 import ApplicationView from "./pages/ApplicationView";
 import Settings from "./pages/Settings";
@@ -48,7 +47,6 @@ function AnimatedRoutes() {
         <Route path="/application/edit" Component={ApplicationEditor} />
         <Route path="/application" Component={ApplicationView} />
         <Route path="/settings" Component={Settings} />
-        <Route path="/documents" Component={DocumentsView} />
         <Route path="/settings/archive" Component={Archive} />
         <Route path="/settings/userData" Component={UserDataPage} />
       </Routes>
