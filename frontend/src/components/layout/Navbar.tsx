@@ -96,7 +96,7 @@ function Navbar() {
                 }`}
               />
             </div>
-            <div className="absolute top-5 right-10 hidden lg:flex justify-between w-5/12">
+            <div className="absolute top-5 right-10 hidden lg:flex justify-end gap-10 w-5/12">
               <button
                 className={`flex gap-1 dark:text-lightgrey p-1 ${
                   currentRoute === "/applicationList" && "outline rounded "
@@ -109,7 +109,9 @@ function Navbar() {
                 Applications
               </button>
               <button
-                className={`flex gap-1 dark:text-lightgrey p-1 `}
+                className={` gap-1 dark:text-lightgrey p-1 ${
+                  currentRoute === "/applicationList" ? "flex" : "hidden"
+                }`}
                 onClick={() => navigate("/application/new")}
               >
                 <span className="text-2xl">
@@ -118,7 +120,9 @@ function Navbar() {
                 Create
               </button>
               <button
-                className={`flex gap-1 dark:text-lightgrey p-1`}
+                className={` gap-1 dark:text-lightgrey p-1 ${
+                  currentRoute === "/applicationList" ? "flex" : "hidden"
+                }`}
                 onClick={() => setSearchMenuOpen(true)}
               >
                 <span className="text-2xl">
@@ -127,7 +131,9 @@ function Navbar() {
                 Search
               </button>
               <button
-                className={`flex gap-1 dark:text-lightgrey p-1`}
+                className={`hidden gap-1 dark:text-lightgrey p-1 ${
+                  currentRoute === "/applicationList" ? "flex" : "hidden"
+                }`}
                 onClick={() => setSortMenuOpen(true)}
               >
                 <span className="text-2xl">
