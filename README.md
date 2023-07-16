@@ -67,3 +67,30 @@ To start using the Application Tracking System, follow these steps:
 ## Conclusion
 
 The Application Tracking System provides a convenient and intuitive solution for managing job applications. With its user-friendly interface, powerful features, and responsive design, users can effectively track their applications, stay organized, and simplify their job search process.
+
+## If you want to try it out
+
+To set up and use the application, follow these steps:
+
+1. Provide a `.env` file in the root directory of the backend folder with the following content:
+
+```
+NODE_ENV=development
+PORT=8210
+MONGO_URI=mongodb+srv://username:password.mongodb.net/Userdata?retryWrites=true&w=majority
+JWT_SECRET="Your JWT-Secret"
+```
+
+2. Open two separate terminals.
+
+3. In one terminal, navigate to the frontend folder and run `npm install` to install the necessary dependencies.
+
+4. In the other terminal, navigate to the backend folder and run `npm install` to install the required packages.
+
+5. Once the installations are complete, run `npm start` in each terminal.
+
+6. The Express server will be running on port 8020, and the Vite dev server will be running on port 5173.
+
+7. Congratulations! You can now use the application and explore its features.
+
+Enjoy using the app!
