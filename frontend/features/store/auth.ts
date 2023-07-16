@@ -72,7 +72,6 @@ export const useAuthStore = create(
     //##########################################################################################################
     update: async () => {
       const user = get();
-      console.log(user);
       await updateUser(
         user?.token ?? "",
         user?.email ?? "",
@@ -85,7 +84,6 @@ export const useAuthStore = create(
       get().update();
     },
     setUserData: (email, name) => {
-      console.log(email);
       set({ email: email, name: name });
       get().update();
     },

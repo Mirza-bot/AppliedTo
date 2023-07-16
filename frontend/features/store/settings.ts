@@ -23,7 +23,7 @@ export const useSettingsStore = create(
       set({ darkMode: settings.darkMode, language: settings.language });
     },
     //Dark Mode
-    darkMode: storageData ? (storageData.settings?.darkMode as boolean) : true,
+    darkMode: storageData ? (storageData.settings?.darkMode as boolean) : false,
     setDarkMode: (value) => {
       set({ darkMode: value });
     },

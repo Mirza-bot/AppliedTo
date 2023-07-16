@@ -4,9 +4,24 @@ import ApplicationListItem from "../components/layout/ApplicationListItem";
 import { useNavigate } from "react-router-dom";
 import ListMenu from "../components/layout/ListMenu";
 import { useApplicationStore } from "../../features/store/applications";
+import ReactDOM from "react-dom";
 import { shallow } from "zustand/shallow";
-import { AiOutlineFileAdd } from "react-icons/ai";
+import {
+  AiFillStar,
+  AiOutlineFileAdd,
+  AiOutlineStar,
+  AiOutlineEdit,
+} from "react-icons/ai";
+import { BiTrash } from "react-icons/bi";
+import { TiArrowSync } from "react-icons/ti";
+
 import { motion } from "framer-motion";
+import ApplicationView from "./ApplicationView";
+import DeleteModal from "../components/DeleteModal";
+import StatusModal from "../components/StatusModal";
+import { Application } from "../../../shared/types";
+import ApplicationEditForm from "../components/forms/ApplicationEditForm";
+import SuccessNotification from "../components/SuccessNotification";
 
 interface StatusData {
   applied: number;
@@ -19,7 +34,12 @@ interface StatusData {
 function ApplicationList() {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state._id);
-  const { applications } = useApplicationStore((state) => state);
+  const {
+    applications,
+    activeApplication,
+    setActiveApplication,
+    editApplication,
+  } = useApplicationStore((state) => state);
   const getApplications = useApplicationStore(
     (state) => state.sortApplicationsBy,
     shallow
@@ -74,6 +94,7 @@ function ApplicationList() {
 
   const scrollToFoundApplication = () => {
     const elements = document.getElementsByClassName("application_list_item");
+    const container = document.getElementById("applicationList");
 
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];
@@ -82,15 +103,53 @@ function ApplicationList() {
       const matchingObject = foundBySearch.find((obj) => obj._id === id);
 
       if (matchingObject) {
+        element.classList.add("animate-pulse");
+        console.log(element);
+
+        setTimeout(() => {
+          element.classList.remove("animate-pulse");
+        }, 6000);
         const scrollOffset = -70;
         const elementPosition = element.getBoundingClientRect().top;
         const scrollPosition = elementPosition + window.scrollY + scrollOffset;
-        window.scrollTo({ top: scrollPosition, behavior: "smooth" });
+        if (window.innerWidth > 1024 && container) {
+          container.scrollTo({ top: scrollPosition, behavior: "smooth" });
+        } else {
+          window.scrollTo({ top: scrollPosition, behavior: "smooth" });
+        }
         resetFoundApplications();
         break;
       }
     }
   };
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [statusModalOpen, setStatusModalOpen] = useState(false);
+
+  const deleteApplication = useApplicationStore(
+    (state) => state.deleteApplication
+  );
+
+  const editStatus = (status: string) => {
+    const updatedApplication = {
+      ...activeApplication,
+      status: status,
+    };
+    setActiveApplication(updatedApplication as Application);
+    editApplication(updatedApplication as Application);
+  };
+
+  const editFavorite = (isFavorite: boolean) => {
+    const updatedApplication = {
+      ...activeApplication,
+      isFavorite: isFavorite,
+    };
+    setActiveApplication(updatedApplication as Application);
+    editApplication(updatedApplication as Application);
+  };
+
+  const [applicationEditOpen, setApplicationEditOpen] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (!user) {
@@ -144,29 +203,151 @@ function ApplicationList() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 100 }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
+      className="lg:overflow-hidden lg:h-screen"
     >
-      <div className="flex flex-col gap-1 overflow-hidden min-h-screen">
-        {applications?.map((application) => {
-          if (application.status !== "Archived") {
-            return (
-              <ApplicationListItem
-                key={application._id}
-                _id={application._id}
-                companyName={application.companyName}
-                jobTitle={application.jobTitle}
-                jobDescription={application.jobDescription}
-                createdAt={application.createdAt}
-                status={application.status}
-                appliedOver={application.appliedOver}
-                isFavorite={application.isFavorite}
-                notes={application.notes}
-              />
-            );
-          }
-        })}
+      <div className="lg:grid lg:grid-cols-3 ">
+        <div
+          id="applicationList"
+          className=" flex flex-col gap-1 min-h-screen lg:h-screen overflow-y-scroll overflow-x-hidden"
+        >
+          <div className=" hidden bg-white dark:bg-darkSecondary dark:border-secondary dark:text-lightgrey lg:flex justify-between p-1 text-xs lg:text-sm border-t-2 border-grey ">
+            {Object.entries(statusData).map(([status, count]) => (
+              <div key={status} className="">
+                {status.charAt(0).toUpperCase() + status.slice(1)}: {count}
+              </div>
+            ))}
+          </div>
+          {applications?.map((application) => {
+            if (application.status !== "Archived") {
+              return (
+                <ApplicationListItem
+                  key={application._id}
+                  _id={application._id}
+                  companyName={application.companyName}
+                  jobTitle={application.jobTitle}
+                  jobDescription={application.jobDescription}
+                  createdAt={application.createdAt}
+                  status={application.status}
+                  appliedOver={application.appliedOver}
+                  isFavorite={application.isFavorite}
+                  notes={application.notes}
+                />
+              );
+            }
+          })}
+        </div>
+        {deleteModalOpen &&
+          ReactDOM.createPortal(
+            <DeleteModal
+              onDelete={() => {
+                deleteApplication(activeApplication?._id as string);
+                setDeleteModalOpen(false);
+                setActiveApplication(
+                  activeApplication
+                    ? applications[applications.indexOf(activeApplication) - 1]
+                    : applications[0]
+                );
+              }}
+              onCancel={() => {
+                setDeleteModalOpen(false);
+              }}
+            />,
+            document.getElementById("root") as Element
+          )}
+        {statusModalOpen &&
+          ReactDOM.createPortal(
+            <StatusModal
+              onCancel={() => {
+                setStatusModalOpen(false);
+              }}
+              editStatus={editStatus}
+              companyName={activeApplication?.companyName as string}
+              jobTitle={activeApplication?.jobTitle as string}
+              status={activeApplication?.status}
+              _id={activeApplication?._id}
+              jobDescription=""
+            />,
+            document.getElementById("root") as Element
+          )}
+        <div className="hidden lg:block lg:col-span-2 text-xl mt-2">
+          <div
+            className={`${activeApplication ? "" : ""} flex justify-end mr-2`}
+          >
+            <div className="flex justify-evenly w-96">
+              <button
+                onClick={() =>
+                  editFavorite(!activeApplication?.isFavorite as boolean)
+                }
+                className={`${
+                  activeApplication?.isFavorite
+                    ? "text-yellow outline"
+                    : " bg-darkgrey text-grey"
+                }    rounded p-1 flex text-2xl`}
+              >
+                {" "}
+                <span className="mt-0.5">
+                  {activeApplication?.isFavorite ? (
+                    <AiFillStar />
+                  ) : (
+                    <AiOutlineStar />
+                  )}
+                </span>
+                <span
+                  className={`${
+                    activeApplication?.isFavorite
+                      ? " text-black dark:text-lightgrey"
+                      : " text-grey bg-darkgrey "
+                  } text-xl`}
+                >
+                  Favorite
+                </span>
+              </button>
+              <button
+                onClick={() => setApplicationEditOpen(!applicationEditOpen)}
+                className={`${
+                  applicationEditOpen
+                    ? "bg-blue text-lightgrey animate-pulse "
+                    : "bg-grey"
+                } flex py-1 pl-1 pr-2 rounded`}
+              >
+                <span className="text-2xl mt-0.5">
+                  <AiOutlineEdit />
+                </span>
+                Edit
+              </button>
+              <button
+                className="flex bg-primary py-1 pl-1 pr-2 rounded"
+                onClick={() => setStatusModalOpen(true)}
+              >
+                <span className="text-2xl mt-0.5">
+                  <TiArrowSync />
+                </span>
+                Status
+              </button>
+              <button
+                onClick={() => setDeleteModalOpen(true)}
+                className="flex bg-red py-1 pl-1 pr-2 rounded"
+              >
+                <span className="text-2xl mt-0.5">
+                  <BiTrash />
+                </span>
+                Delete
+              </button>
+            </div>
+          </div>
+          {applicationEditOpen ? (
+            <div className="p-6">
+              <ApplicationEditForm />
+              <SuccessNotification />
+            </div>
+          ) : (
+            <ApplicationView />
+          )}
+        </div>
       </div>
-      <div className="sticky z-10 bottom-0">
-        <div className="bg-white dark:bg-darkSecondary dark:border-secondary dark:text-lightgrey flex justify-between p-1 text-xs border-t-2 border-grey">
+
+      <div className="lg:hidden sticky z-10 bottom-0">
+        <div className="bg-white dark:bg-darkSecondary dark:border-secondary dark:text-lightgrey flex justify-between p-1 text-xs lg:text-sm border-t-2 border-grey sm:px-5">
           {Object.entries(statusData).map(([status, count]) => (
             <div key={status} className="">
               {status.charAt(0).toUpperCase() + status.slice(1)}: {count}

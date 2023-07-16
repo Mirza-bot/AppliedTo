@@ -5,6 +5,7 @@ import Switch from "react-switch";
 import { useApplicationStore } from "../../../features/store/applications";
 
 import { useNavigate } from "react-router-dom";
+import useStatusStore from "../../../features/store/status";
 
 function ApplicationEditForm() {
   const application = useApplicationStore((state) => state.activeApplication);
@@ -16,6 +17,8 @@ function ApplicationEditForm() {
   const [appliedOver, setAppliedOver] = useState<string>("");
   const [status, setStatus] = useState<string>("Applied");
   const [_id, setId] = useState<string>("");
+
+  const { setSuccess, setMessage } = useStatusStore((state) => state);
 
   // Form Control
   const [companyError, setCompanyError] = useState<boolean>(false);
@@ -67,19 +70,26 @@ function ApplicationEditForm() {
       status,
     };
     editApplication(updatedApplication);
-    navigate(-1);
+    setSuccess();
+    setMessage("Application edited");
+    if (window.innerWidth < 1024) {
+      navigate(-1);
+    }
   };
 
   return (
     <div className="pt-3 dark:text-lightgrey">
       <form
-        className=" mx-auto flex flex-col gap-3"
+        className="mx-auto flex flex-col gap-3"
         onSubmit={(event) => {
           handleSubmit(event);
         }}
       >
         <div className="flex flex-row justify-between w-full">
-          <div className="bg-white dark:bg-darkSecondary p-2 rounded-md  ">
+          <div
+            className="bg-white dark:bg-darkSecondary p-2 rounded-md"
+            tabIndex={1}
+          >
             <label htmlFor="favorite_check" className="flex flex-row">
               <span className="text-3xl text-yellow font-medium drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
                 <AiFillStar />
@@ -93,10 +103,14 @@ function ApplicationEditForm() {
                   handleSwitch(value);
                 }}
                 checked={favorite}
+                tabIndex={2}
               />
             </label>
           </div>
-          <div className="bg-white dark:bg-darkSecondary p-2 rounded-md">
+          <div
+            className="bg-white dark:bg-darkSecondary p-2 rounded-md"
+            tabIndex={3}
+          >
             <label htmlFor="status">Status:</label>
             <select
               onChange={handleStatusChange}
@@ -104,6 +118,7 @@ function ApplicationEditForm() {
               className="ml-3 dark:bg-darkPrimary"
               name="status"
               id="status"
+              tabIndex={4}
             >
               <option value="Applied">Applied</option>
               <option value="Interviewing">Interviewing</option>
@@ -123,9 +138,10 @@ function ApplicationEditForm() {
             value={companyName}
             event={setCompanyName}
             labelClass={companyError ? "text-red" : ""}
+            tabIndex={5}
           />
           {companyError && (
-            <span className="text-red text-sm ml-1">
+            <span className="text-red text-sm ml-1" tabIndex={-1}>
               Please provide the company name.
             </span>
           )}
@@ -135,13 +151,14 @@ function ApplicationEditForm() {
             label="Job/Position*"
             id="position"
             type="text"
-            inputClass=" p-0.5"
+            inputClass="p-0.5"
             value={jobTitle}
             event={setJobTitle}
             labelClass={titleError ? "text-red" : ""}
+            tabIndex={6}
           />
           {titleError && (
-            <span className="text-red text-sm ml-1">
+            <span className="text-red text-sm ml-1" tabIndex={-1}>
               Please provide the job/position title.
             </span>
           )}
@@ -154,6 +171,7 @@ function ApplicationEditForm() {
           textarea={true}
           value={jobDescription}
           event={setJobDescription}
+          tabIndex={7}
         />
         <CustomInput
           label="Applied over"
@@ -162,11 +180,13 @@ function ApplicationEditForm() {
           textareaClass="border-2 border-grey p-0.5"
           value={appliedOver}
           event={setAppliedOver}
+          tabIndex={8}
         />
 
         <button
           type="submit"
           className="bg-secondary dark:text-primary dark:bg-darkSecondary dark:active:bg-darkAccent dark:active:text-darkSecondary text-black text-xl font-medium w-9/12 h-12 rounded-md mx-auto my-10 block  active:bg-accent active:text-secondary transition-colors  select-none"
+          tabIndex={9}
         >
           Save
         </button>

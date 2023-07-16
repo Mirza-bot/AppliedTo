@@ -20,7 +20,6 @@ function Archive() {
       (application) => application.status === "Archived"
     );
     setArchiveApplications(archiveItems);
-    console.log(archiveItems);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applications]);
 

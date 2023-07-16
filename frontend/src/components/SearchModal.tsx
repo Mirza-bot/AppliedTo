@@ -29,6 +29,7 @@ function SearchModal(props: Props) {
           label=""
           type="text"
           id="searchValue"
+          onEnter={searchAndClose}
         />
         <div className="flex justify-evenly mt-1">
           <button

@@ -9,7 +9,7 @@ interface Props {
 
 function Note(props: Props) {
   return (
-    <div className="flex flex-col border-darkgrey  border-2 rounded drop-shadow-slight">
+    <div className="flex flex-col border-darkgrey  border-2 rounded drop-shadow-slight lg:mb-5">
       <div className="flex flex-row justify-between dark:bg-darkSecondary bg-darkgrey text-white dark:text-lightgrey px-0.5 ">
         <span className="ml-1">{props.inPlace + 1}</span>
         <span>{props.date}</span>
@@ -20,7 +20,7 @@ function Note(props: Props) {
           <AiOutlineCloseCircle />
         </button>
       </div>
-      <div className="p-3 text-justify bg-white dark:bg-darkPrimary">
+      <div className="p-3 text-justify bg-white dark:bg-darkBg">
         {props.noteContent}
       </div>
     </div>

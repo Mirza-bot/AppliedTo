@@ -59,13 +59,9 @@ function ApplicationListItem(props: Application) {
   }
 
   //State mutations
-  const setActiveApplication = useApplicationStore(
-    (state) => state.setActiveApplication
-  );
-  const deleteApplication = useApplicationStore(
-    (state) => state.deleteApplication
-  );
-  const editApplication = useApplicationStore((state) => state.editApplication);
+
+  const { setActiveApplication, deleteApplication, editApplication } =
+    useApplicationStore((state) => state);
 
   const editFavorite = (isFavorite: boolean) => {
     const updatedApplication = {
@@ -137,100 +133,130 @@ function ApplicationListItem(props: Application) {
     else setTilePosition(1);
   };
 
-  return (
-    <div
-      id={props._id}
-      className={`application_list_item h-24 bg-white dark:bg-darkSecondary flex-row flex ${
-        swipeActive && "transition-transform ease-out duration-300"
-      } `}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      style={{
-        minWidth: "200vw",
-        width: componentWidth,
-        transform: `translateX(${displayPosition()})`,
-      }}
-    >
-      {deleteModalOpen &&
-        ReactDOM.createPortal(
-          <DeleteModal
-            onDelete={() => deleteApplication(props._id as string)}
-            onCancel={() => {
-              setDeleteModalOpen(false);
-              setTilePosition(1);
-            }}
-          />,
-          document.getElementById("root") as Element
-        )}
-      <div className="button_container flex flex-row my-2 ml-2 mr-1 gap-2 drop-shadow-slight">
-        <ListItemButton
-          click={() => {
-            setActiveApplication(props), navigate("/application/edit");
-          }}
-          icon={<AiOutlineEdit />}
-          addClass="bg-grey"
-        />
-        <ListItemButton
-          click={() => {
-            editFavorite(!favorite);
-          }}
-          addClass="bg-yellow"
-          icon={<AiOutlineStar />}
-          active={favorite}
-        />
-      </div>
-
+  if (window.innerWidth < 1024) {
+    return (
       <div
-        className="flex justify-between w-screen dark:text-lightgrey"
-        onClick={redirect}
+        id={props._id}
+        className={`application_list_item h-24 bg-white dark:bg-darkSecondary flex-row flex ${
+          swipeActive && "transition-transform ease-out duration-300"
+        } `}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        style={{
+          minWidth: "200vw",
+          width: componentWidth,
+          transform: `translateX(${displayPosition()})`,
+        }}
       >
-        <div className="flex-col flex justify-between py-2 pl-2 overflow-hidden sm:px-5">
-          <span className="text-lg font-medium">{props.jobTitle}</span>
-          <span className="text-lg font-semibold">{props.companyName}</span>
-          <span className="text-sm font-light overflow-hidden">
-            {props.appliedOver}
-          </span>
-        </div>
-        <div className="flex flex-col text-right justify-between py-2 px-2">
-          <span className="text-sm font-light">
-            {formatDate(props.createdAt as string)}
-          </span>
-          <span className="text-yellow flex justify-end text-2xl drop-shadow-slight">
-            {favorite ? <AiFillStar /> : ""}
-          </span>
-          <span className="text-sm">{props.status}</span>
-        </div>
-      </div>
-      <div className="button_container flex flex-row my-2 ml-2 mr-1 gap-2 drop-shadow-slight">
-        <ListItemButton
-          click={() => setDeleteModalOpen(true)}
-          icon={<BiTrash />}
-          addClass="bg-red"
-        />
-        {statusModalOpen &&
+        {deleteModalOpen &&
           ReactDOM.createPortal(
-            <StatusModal
+            <DeleteModal
+              onDelete={() => deleteApplication(props._id as string)}
               onCancel={() => {
-                setStatusModalOpen(false);
+                setDeleteModalOpen(false);
                 setTilePosition(1);
               }}
-              editStatus={editStatus}
-              companyName={props.companyName}
-              jobTitle={props.jobTitle}
-              status={props.status}
-              _id={props._id}
-              jobDescription=""
             />,
             document.getElementById("root") as Element
           )}
-        <ListItemButton
-          icon={<TiArrowSync />}
-          click={() => setStatusModalOpen(true)}
-          addClass="bg-primary"
-        />
+        <div className="button_container flex flex-row my-2 ml-2 mr-1 gap-2 drop-shadow-slight">
+          <ListItemButton
+            click={() => {
+              setActiveApplication(props), navigate("/application/edit");
+            }}
+            icon={<AiOutlineEdit />}
+            addClass="bg-grey"
+          />
+          <ListItemButton
+            click={() => {
+              editFavorite(!favorite);
+            }}
+            addClass="bg-yellow"
+            icon={<AiOutlineStar />}
+            active={favorite}
+          />
+        </div>
+
+        <div
+          className="flex justify-between w-screen dark:text-lightgrey"
+          onClick={redirect}
+        >
+          <div className="flex-col flex justify-between py-2 pl-2 overflow-hidden sm:px-5">
+            <span className="text-lg font-medium">{props.jobTitle}</span>
+            <span className="text-lg font-semibold">{props.companyName}</span>
+            <span className="text-sm font-light overflow-hidden ">
+              {props.appliedOver}
+            </span>
+          </div>
+          <div className="flex flex-col text-right justify-between py-2 px-2">
+            <span className="text-sm font-light">
+              {formatDate(props.createdAt as string)}
+            </span>
+            <span className="text-yellow flex justify-end text-2xl drop-shadow-slight">
+              {favorite ? <AiFillStar /> : ""}
+            </span>
+            <span className="text-sm">{props.status}</span>
+          </div>
+        </div>
+        <div className="button_container flex flex-row my-2 ml-2 mr-1 gap-2 drop-shadow-slight">
+          <ListItemButton
+            click={() => setDeleteModalOpen(true)}
+            icon={<BiTrash />}
+            addClass="bg-red"
+          />
+          {statusModalOpen &&
+            ReactDOM.createPortal(
+              <StatusModal
+                onCancel={() => {
+                  setStatusModalOpen(false);
+                  setTilePosition(1);
+                }}
+                editStatus={editStatus}
+                companyName={props.companyName}
+                jobTitle={props.jobTitle}
+                status={props.status}
+                _id={props._id}
+                jobDescription=""
+              />,
+              document.getElementById("root") as Element
+            )}
+          <ListItemButton
+            icon={<TiArrowSync />}
+            click={() => setStatusModalOpen(true)}
+            addClass="bg-primary"
+          />
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div
+        id={props._id}
+        className="p-4 bg-white dark:bg-darkSecondary dark:text-lightgrey flex justify-between hover:cursor-pointer application_list_item"
+        onClick={() => setActiveApplication(props)}
+      >
+        <div className="flex flex-col">
+          <h1 className="text-lg">{props.jobTitle}</h1>
+          <h2>{props.companyName}</h2>
+          <span className=" overflow-hidden w-36">{props.appliedOver}</span>
+        </div>
+        <div className="flex flex-col text-right">
+          <span>{formatDate(props.createdAt as string)}</span>
+          <span>{props.status}</span>
+
+          <span
+            className={`text-2xl max-w-max ml-auto ${
+              props.isFavorite
+                ? "text-yellow"
+                : "text-white dark:text-darkSecondary"
+            }`}
+          >
+            <AiFillStar />
+          </span>
+        </div>
+      </div>
+    );
+  }
 }
 export default ApplicationListItem;

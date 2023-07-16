@@ -35,7 +35,7 @@ function AuthPage() {
       initial={{ x: 100 }}
       animate={{ x: 0 }}
       exit={{ x: 100, transition: { duration: 0.2 } }}
-      className="select-none"
+      className="select-none sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto"
     >
       {ReactDOM.createPortal(
         <SuccessNotification />,

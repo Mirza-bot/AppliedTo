@@ -28,12 +28,12 @@ function UserDataPage() {
   };
 
   return (
-    <div className="px-3">
+    <div className="px-3 lg:max-w-sm lg:mx-auto ">
       <h1 className="text-2xl font-medium dark:text-lightgrey py-4 pl-3 ">
         Edit Userdata
       </h1>
       <form
-        className="px-6 py-5 bg-white dark:bg-darkSecondary dark:text-lightgrey  flex flex-col gap-2  items-center justify-between"
+        className="px-6 py-5 bg-white dark:bg-darkPrimary rounded dark:text-lightgrey  flex flex-col gap-2  items-center justify-between"
         onSubmit={(e) => {
           handleSubmit(e);
         }}
@@ -59,7 +59,7 @@ function UserDataPage() {
         )}
         <button
           type="submit"
-          className="bg-primary dark:text-primary dark:bg-darkPrimary dark:active:bg-darkAccent dark:active:text-darkSecondary text-white text-xl font-medium w-9/12 h-14 rounded-md mx-auto my-20 block  active:bg-accent active:text-secondary transition-colors  select-none"
+          className="bg-primary dark:text-primary dark:bg-darkSecondary dark:active:bg-darkAccent dark:active:text-darkSecondary text-white text-xl font-medium w-9/12 h-14 rounded-md mx-auto my-20 block  active:bg-accent active:text-secondary transition-colors  select-none"
         >
           Save
         </button>

@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import NoteModal from "../components/NoteModal";
 import { Application } from "../../../shared/types";
-import LoadingSpinner from "../components/LoadingSpinner";
 
 function ApplicationView() {
   const navigate = useNavigate();
@@ -47,6 +46,7 @@ function ApplicationView() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (!application) {
       navigate("/applicationList");
     }
@@ -54,11 +54,15 @@ function ApplicationView() {
   }, [application]);
 
   if (!application) {
-    return <LoadingSpinner />;
+    return (
+      <div className="text-3xl p-8 text-darkgrey dark:text-lightgrey">
+        Choose an application from the list to see a preview.
+      </div>
+    );
   } else {
     return (
-      <div className="p-5 mt-1 w-screen overflow-hidden dark:text-lightgrey">
-        <div className="flex w-full justify-between">
+      <div className="p-5 mt-1 w-screen lg:w-full overflow-hidden lg:overflow-y-scroll lg:h-screen dark:text-lightgrey">
+        <div className="flex w-full justify-between ">
           <div>
             <h1 className="text-2xl font-medium pt-5">
               {application?.jobTitle}
@@ -78,13 +82,13 @@ function ApplicationView() {
               {application?.isFavorite && <AiFillStar />}
             </span>
           </h1>
-          <div className="mt-3 bg-white dark:bg-darkPrimary rounded-sm p-2">
+          <div className="mt-3 bg-white dark:bg-darkPrimary rounded-sm p-2 lg:overflow-y-auto lg:max-h-96">
             <span className=" font-medium">Description</span>
             <p className="mt-3">{application?.jobDescription}</p>
           </div>
         </div>
-        <div className=" w-full absolute left-0 mt-5">
-          <div className="bg-secondary  dark:bg-darkAccent flex w-full justify-between pr-5 py-2 ">
+        <div className=" w-full lg:bg-white lg:dark:bg-darkPrimary  lg:block lg:rounded-sm left-0 mt-5">
+          <div className="bg-secondary  dark:bg-darkAccent flex w-full justify-between pr-5 py-2 lg:rounded-t-sm">
             <h3 className="text-xl ml-5 font-semibold  ">Notes</h3>
             <button
               onClick={() => setNoteModalOpen(true)}

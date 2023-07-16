@@ -89,9 +89,6 @@ const updateUser = async (
   settings: Settings
 ) => {
   status.setLoading();
-  console.log("Email: " + email);
-  console.log("Name: " + name);
-  console.log("Setting: " + settings);
 
   try {
     const response = await axios.put(

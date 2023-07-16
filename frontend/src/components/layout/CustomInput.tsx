@@ -7,10 +7,12 @@ interface Props {
   placeholder?: string;
   value?: string;
   event?: (value: string) => void;
+  onEnter?: () => void;
   labelClass?: string;
   inputClass?: string;
   textareaClass?: string;
   textarea?: boolean;
+  tabIndex?: number;
 }
 
 function CustomInput(props: Props) {
@@ -31,6 +33,14 @@ function CustomInput(props: Props) {
     }
   };
 
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (event.key === "Enter" && props.onEnter) {
+      props.onEnter();
+    }
+  };
+
   return (
     <div className="flex flex-col w-full gap-1">
       <div className="flex justify-between">
@@ -48,15 +58,19 @@ function CustomInput(props: Props) {
           rows={6}
           cols={10}
           value={value}
+          onKeyDown={handleKeyDown}
+          tabIndex={props.tabIndex}
           className={`bg-white dark:bg-darkSecondary dark:border-darkAccent dark:focus:border-accent dark:focus:border-4  rounded mb-3 border-grey border-4 outline-none focus:border-accent focus:border-4 ${props.textareaClass}`}
         />
       ) : (
         <input
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
           id={props.id}
           type={props.type}
           className={`bg-white dark:bg-darkSecondary dark:border-darkAccent dark:focus:border-accent dark:focus:border-4  rounded text-xl mb-3 border-grey border-4 outline-none focus:border-accent focus:border-4 ${props.inputClass}`}
           placeholder={props.placeholder}
+          tabIndex={props.tabIndex}
           value={value}
         />
       )}

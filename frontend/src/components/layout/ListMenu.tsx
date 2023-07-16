@@ -18,7 +18,7 @@ function ListMenu() {
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
   const [searchMenuOpen, setSearchMenuOpen] = useState(false);
   return (
-    <div className=" h-16 w-full sticky bg-primary dark:bg-darkPrimary bottom-0 border-t-2 border-secondary">
+    <div className=" h-16 w-full sticky bg-primary dark:bg-darkPrimary bottom-0 border-t-2 border-secondary lg:hidden">
       <div className="flex flex-row text-black dark:text-lightgrey text-4xl w-9/12 mx-auto h-full justify-between">
         {sortMenuOpen &&
           ReactDOM.createPortal(

@@ -52,7 +52,7 @@ function ArchiveItem(props: Application) {
         <ListItemButton
           icon={<AiOutlineRollback />}
           click={() => editStatus("Applied")}
-          addClass="dark:bg-darkPrimary bg-secondary  p-3 w-12"
+          addClass="dark:bg-darkPrimary bg-secondary lg:block p-3 w-12"
         />
       </div>
     </div>
