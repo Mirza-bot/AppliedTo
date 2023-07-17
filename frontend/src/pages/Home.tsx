@@ -27,10 +27,10 @@ function Login() {
     >
       <header className="px-4 mt-10 lg:grid lg:grid-cols-8 lg:gap-4">
         <div className=" mb-8 pb-3 lg:pt-16 lg:col-start-2 lg:col-span-3">
-          <div className="text-3xl font-semibold ml-3">
-            Organize your applications
-          </div>
-          <p className="mt-5 font-medium text-lg w-11/12 mx-auto leading-loose">
+          <p className=" font-medium text-lg w-11/12 mx-auto leading-loose">
+            <h1 className="text-3xl font-semibold mb-5">
+              Organize your applications
+            </h1>
             Simplify the job application process, ensuring efficiency.
             <br />
             A seamless experience for creating, tracking and storing
