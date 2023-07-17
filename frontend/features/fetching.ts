@@ -28,6 +28,7 @@ const register = async (email: string, name: string, password: string) => {
         password: password,
       },
       {
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },
@@ -59,6 +60,7 @@ const login = async (email: string, password: string) => {
         password: password,
       },
       {
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },
@@ -99,6 +101,7 @@ const updateUser = async (
         settings: settings,
       },
       {
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -136,6 +139,7 @@ const createApplication = async (
       URL + "applications/create",
       newApplication,
       {
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -164,6 +168,7 @@ const getApplications = async (token: string, userId: string) => {
   status.setLoading();
   try {
     const response = await axios.get(URL + "applications/read", {
+      withCredentials: true,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -196,6 +201,7 @@ const deleteApplication = async (
   status.setLoading();
   try {
     const response = await axios.delete(URL + "applications/delete", {
+      withCredentials: true,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -231,6 +237,7 @@ const editApplication = async (token: string, application: Application) => {
         ...application,
       },
       {
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -262,6 +269,7 @@ const getDocuments = async (token: string, user: string) => {
   status.setLoading();
   try {
     const response = await axios.get(URL + "documents/read", {
+      withCredentials: true,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer: ${token}`,
