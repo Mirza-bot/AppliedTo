@@ -24,6 +24,15 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://appliedto-ats.onrender.com"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
 // Routes
 app.use("/api/user", userRouter);
 app.use("/api/applications", applicationRouter);
