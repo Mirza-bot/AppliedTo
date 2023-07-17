@@ -3,9 +3,9 @@ import useStatusStore from "./store/status";
 import { Application, Settings } from "../../shared/types";
 
 //#######################################################################################
-// Before building for production this must be changed back to http://localhost:8210/api/
+// Changed from http://localhost:8210/api/ to current URL because of request issues on render.com
 //#######################################################################################
-const URL = "http://localhost:8210/api/";
+const URL = "https://appliedto-ats.onrender.com/api/";
 
 //Error handling in frontend
 const status = useStatusStore.getState();
