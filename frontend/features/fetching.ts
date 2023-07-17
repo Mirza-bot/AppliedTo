@@ -3,7 +3,7 @@ import useStatusStore from "./store/status";
 import { Application, Settings } from "../../shared/types";
 
 //#######################################################################################
-// Changed from http://localhost:8210/api/ to current URL because of request issues on render.com
+// Changed from http://localhost:8210/api/ to current URL for deployment on render.com
 //#######################################################################################
 const URL = "https://appliedto-ats.onrender.com/api/";
 

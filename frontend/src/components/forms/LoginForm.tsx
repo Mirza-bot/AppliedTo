@@ -32,7 +32,7 @@ function LoginForm() {
             type="email"
             id="email"
             labelClass="text-darkgrey"
-            value={localStorage.getItem("inputMail") as string}
+            value={email}
             event={setEmail}
           />
           <CustomInput
