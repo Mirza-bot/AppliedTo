@@ -29,19 +29,15 @@ app.use(errorHandler);
 
 // Serve Frontend
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+  app.use(express.static(path.join(__dirname, "./dist")));
 
   app.get("*", (req: Request, res: Response) =>
-    res.sendFile(
-      path.join(__dirname, "../frontend/dist/index.html"),
-      {},
-      (err) => {
-        if (err) {
-          console.error("Error sending file:", err);
-          res.status(500).send("Error sending file");
-        }
+    res.sendFile(path.join(__dirname, "./dist/index.html"), {}, (err) => {
+      if (err) {
+        console.error("Error sending file:", err);
+        res.status(500).send("Error sending file");
       }
-    )
+    })
   );
 } else {
   app.get("/", (req: Request, res: Response) => {
