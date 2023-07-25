@@ -69,7 +69,9 @@ function ApplicationListItem(props: Application) {
       isFavorite: isFavorite,
     };
     editApplication(updatedApplication);
-    setTilePosition(1);
+    setTimeout(() => {
+      setTilePosition(1);
+    }, 500);
   };
 
   const editStatus = (status: string) => {
