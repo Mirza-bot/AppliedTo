@@ -1,9 +1,8 @@
 # AppliedTo
-## Application Tracking System (ATS)
 
 ## Overview
 
-The Application Tracking System (ATS) is a web application designed to help users keep track of their job applications. It provides a user-friendly interface to manage and organize application details, such as job titles, company names, application status, and notes.
+A web application designed to help users keep track of their job applications. It provides a user-friendly interface to manage and organize application details, such as job titles, company names, application status, and notes.
 
 ## Features
 
